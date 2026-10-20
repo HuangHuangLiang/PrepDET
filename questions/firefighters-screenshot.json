@@ -1,0 +1,150 @@
+{
+  "id": "firefighters-screenshot",
+  "title": "Firefighters: Complete Interactive Reading Set",
+  "section": "interactive-reading",
+  "difficulty": "B2 • Intermediate",
+  "timeLimitSeconds": 458,
+  "paragraph1": "Firefighters are the people who put out fires on a nearly daily basis. They work for fire departments, which are organizations of trained professionals that keep the community safe from fires. When a fire breaks out, firefighters enter buildings to look for people and pets, rescue them, and put out the fire to prevent it from spreading. They also conduct fire drills and inspections to keep businesses and agencies safe.",
+  "paragraph2": "They must be physically fit and must be able to work in harsh conditions and difficult situations. In addition to responding to fires, firefighters often help in situations that require medical attention, such as automobile accidents and gas emergencies. In addition to physical skills and knowledge, firefighters have to have strong social skills, because they must often interact with people during stressful situations.",
+  "questions": [
+    {
+      "id": "part1-cloze",
+      "part": 1,
+      "type": "complete_the_sentences",
+      "prompt": "Select the best option for each missing word",
+      "passageTitle": "PASSAGE",
+      "passage": "Firefighters are the people who put out fires on a {{1}} daily basis. They work for fire departments, which {{2}} organizations of trained professionals that keep the community {{3}} from fires. When a fire {{4}} out, firefighters enter buildings to look {{5}} people and pets, rescue them, and {{6}} out the fire to prevent {{7}} from spreading. They also conduct {{8}} drills and inspections to {{9}} businesses and agencies safe.",
+      "blanks": [
+        {
+          "id": 1,
+          "options": ["nearly", "roughly", "practically", "different", "non"],
+          "answer": "nearly",
+          "explanation": "'On a nearly daily basis' is the standard adverbial collocation modifying 'daily'."
+        },
+        {
+          "id": 2,
+          "options": ["are", "means", "have", "being", "make"],
+          "answer": "are",
+          "explanation": "The relative clause 'which are organizations...' requires the present tense plural verb 'are' agreeing with 'fire departments'."
+        },
+        {
+          "id": 3,
+          "options": ["safe", "far", "clear", "away", "open"],
+          "answer": "safe",
+          "explanation": "'Keep [someone] safe from fires' is the fixed collocation meaning to protect from danger."
+        },
+        {
+          "id": 4,
+          "options": ["breaks", "fires", "comes", "turns", "falls"],
+          "answer": "breaks",
+          "explanation": "The phrasal verb 'break out' means to start suddenly (especially for fires or crises)."
+        },
+        {
+          "id": 5,
+          "options": ["for", "their", "into", "over", "after"],
+          "answer": "for",
+          "explanation": "'Look for' means to search for people and pets inside burning buildings."
+        },
+        {
+          "id": 6,
+          "options": ["put", "fire", "take", "set", "call"],
+          "answer": "put",
+          "explanation": "'Put out the fire' is the phrasal verb meaning to extinguish."
+        },
+        {
+          "id": 7,
+          "options": ["it", "that", "them", "which", "this"],
+          "answer": "it",
+          "explanation": "The pronoun 'it' refers back to the singular noun 'the fire'."
+        },
+        {
+          "id": 8,
+          "options": ["fire", "regular", "sudden", "casual", "former"],
+          "answer": "fire",
+          "explanation": "'Fire drills and inspections' is the specific compound noun phrase for routine emergency drills."
+        },
+        {
+          "id": 9,
+          "options": ["keep", "see", "make", "hold", "stay"],
+          "answer": "keep",
+          "explanation": "'Keep businesses and agencies safe' means maintaining safety."
+        }
+      ]
+    },
+    {
+      "id": "part2-connecting-sentence",
+      "part": 2,
+      "type": "complete_the_passage",
+      "prompt": "Select the best sentence to complete the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "Fire protection is the chief duty of a fire department.",
+        "Life in a fire department is not always exciting, but it is rewarding.",
+        "Firefighters must have a variety of skills and knowledge.",
+        "A fire detection system monitors for smoke, heat, or movement.",
+        "Firefighters need extensive training before they can find a job."
+      ],
+      "answer": "Firefighters must have a variety of skills and knowledge.",
+      "explanation": "This sentence perfectly bridges Paragraph 1 (duties of putting out fires and inspections) and Paragraph 2 (physical fitness, medical assistance, and social skills)."
+    },
+    {
+      "id": "part3-highlight-1",
+      "part": 3,
+      "type": "highlight_the_answer",
+      "prompt": "Highlight text in the passage to answer the question below",
+      "question": "In addition to knowledge and physical fitness, what other skills are important for firefighters?",
+      "passageTitle": "PASSAGE",
+      "answer": "strong social skills",
+      "acceptableSubstrings": [
+        "strong social skills",
+        "social skills"
+      ],
+      "explanation": "The last sentence explicitly states: 'firefighters have to have strong social skills, because they must often interact with people during stressful situations.'"
+    },
+    {
+      "id": "part3-highlight-2",
+      "part": 3,
+      "type": "highlight_the_answer",
+      "prompt": "Highlight text in the passage to answer the question below",
+      "question": "What non-fire emergencies do firefighters often respond to?",
+      "passageTitle": "PASSAGE",
+      "answer": "automobile accidents and gas emergencies",
+      "acceptableSubstrings": [
+        "automobile accidents and gas emergencies",
+        "situations that require medical attention, such as automobile accidents and gas emergencies",
+        "medical attention, such as automobile accidents and gas emergencies"
+      ],
+      "explanation": "Paragraph 2 states that firefighters help in 'situations that require medical attention, such as automobile accidents and gas emergencies.'"
+    },
+    {
+      "id": "part3-main-idea",
+      "part": 3,
+      "type": "identify_the_idea",
+      "prompt": "Select the idea that is expressed in the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "Firefighting requires diverse emergency abilities spanning physical fitness, medical aid, and social communication.",
+        "Fire departments focus solely on extinguishing structural blazes and do not assist in medical crises.",
+        "Social skills are much more important for a firefighter than physical endurance during emergencies.",
+        "Automobile accident response has completely replaced building fire prevention in modern cities."
+      ],
+      "answer": "Firefighting requires diverse emergency abilities spanning physical fitness, medical aid, and social communication.",
+      "explanation": "The entire passage describes how firefighters extinguish blazes, conduct inspections, provide medical emergency aid, and require physical fitness and social communication skills."
+    },
+    {
+      "id": "part3-best-title",
+      "part": 3,
+      "type": "title_the_passage",
+      "prompt": "Select the best title for the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "The Multifaceted Roles and Skills of Modern Firefighters",
+        "A Brief History of Municipal Fire Trucks and Hydrants",
+        "Why Social Work Is the Most Dangerous Occupation in Cities",
+        "How to Prevent Automobile Accidents and Gas Emergencies"
+      ],
+      "answer": "The Multifaceted Roles and Skills of Modern Firefighters",
+      "explanation": "This title encompasses both the various duties (fires, inspections, medical calls) and the varied skills (physical, technical, social) discussed in the text."
+    }
+  ]
+}

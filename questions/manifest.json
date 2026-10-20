@@ -1,0 +1,34 @@
+{
+  "packs": [
+    {
+      "id": "firefighters-screenshot",
+      "title": "Firefighters: Complete Interactive Reading Set",
+      "description": "Authentic Duolingo English Test set matching all reference screenshots: Part 1 cloze (9 blanks), Part 2 connecting sentence, and Part 3 (2 highlights, main idea, best title).",
+      "section": "interactive-reading",
+      "difficulty": "B2 • Intermediate",
+      "questionCount": 6,
+      "timeLimitSeconds": 458,
+      "file": "questions/firefighters-screenshot.json"
+    },
+    {
+      "id": "full-interactive-reading",
+      "title": "Urban Ecology: Complete Interactive Reading Set",
+      "description": "Full 3-part DET Interactive Reading: Part 1 cloze (6 blanks), Part 2 connecting sentence, and Part 3 (2 highlights, main idea, best title).",
+      "section": "interactive-reading",
+      "difficulty": "B2–C1 • Upper-Intermediate",
+      "questionCount": 6,
+      "timeLimitSeconds": 480,
+      "file": "questions/full-interactive-reading.json"
+    },
+    {
+      "id": "science-technology-pack",
+      "title": "Sleep & Memory: Complete Interactive Reading Set",
+      "description": "Advanced C1 academic practice set covering neuroscience with Part 1 cloze (6 blanks), Part 2 connecting sentence, and Part 3 (2 highlights, main idea, best title).",
+      "section": "interactive-reading",
+      "difficulty": "C1 • Advanced",
+      "questionCount": 6,
+      "timeLimitSeconds": 480,
+      "file": "questions/science-technology-pack.json"
+    }
+  ]
+}

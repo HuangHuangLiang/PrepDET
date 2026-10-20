@@ -1,0 +1,130 @@
+{
+  "id": "full-interactive-reading",
+  "title": "Urban Ecology: Complete Interactive Reading Set",
+  "section": "interactive-reading",
+  "difficulty": "B2–C1 • Upper-Intermediate",
+  "timeLimitSeconds": 480,
+  "paragraph1": "As metropolitan areas expand across the globe, concrete pavements and dark rooftops absorb significant amounts of solar radiation, creating what scientists call the urban heat island effect. Downtown neighborhoods often experience temperatures several degrees higher than surrounding rural landscapes, particularly after sunset. To counteract this phenomenon, urban planners have begun integrating green roofs and tree canopies into municipal building codes. Vegetated surfaces cool the surrounding air through evapotranspiration, a natural process in which plants release water vapor through their leaves. Besides lowering summer cooling costs for residents, these green corridors provide vital habitats for migratory birds and native pollinators.",
+  "paragraph2": "Researchers monitoring retrofitted commercial districts in Singapore and Toronto found that buildings with dense rooftop vegetation reduced peak roof membrane temperatures by up to twenty degrees Celsius. Furthermore, the soil layers atop these structures acted as natural sponges during heavy rainstorms, retaining up to seventy percent of stormwater runoff before it could overwhelm municipal drainage pipes.",
+  "questions": [
+    {
+      "id": "ir-step-1",
+      "part": 1,
+      "type": "complete_the_sentences",
+      "prompt": "Select the best option for each missing word",
+      "passageTitle": "PASSAGE",
+      "passage": "As metropolitan areas expand across the globe, concrete pavements and dark rooftops {{1}} significant amounts of solar radiation, creating what scientists call the urban heat island effect. Downtown neighborhoods often experience temperatures several degrees higher {{2}} surrounding rural landscapes, particularly after sunset. To {{3}} this phenomenon, urban planners have begun integrating green roofs and tree canopies {{4}} municipal building codes. Vegetated surfaces cool the surrounding air {{5}} evapotranspiration, a natural process in which plants release water vapor through their leaves. {{6}} lowering summer cooling costs for residents, these green corridors provide vital habitats for migratory birds and native pollinators.",
+      "blanks": [
+        {
+          "id": 1,
+          "options": ["absorb", "reflect", "dissolve", "compile", "exert"],
+          "answer": "absorb",
+          "explanation": "Dark surfaces and concrete 'absorb' solar radiation, trapping heat and causing the urban heat island effect."
+        },
+        {
+          "id": 2,
+          "options": ["than", "from", "over", "as", "to"],
+          "answer": "than",
+          "explanation": "Comparative adjectives like 'higher' take the conjunction/preposition 'than'."
+        },
+        {
+          "id": 3,
+          "options": ["counteract", "accelerate", "endorse", "provoke", "imitate"],
+          "answer": "counteract",
+          "explanation": "'Counteract' means to act against something in order to reduce its harmful effects."
+        },
+        {
+          "id": 4,
+          "options": ["into", "onto", "upon", "with", "under"],
+          "answer": "into",
+          "explanation": "'Integrate [something] into [a system/code]' is the standard prepositional collocation."
+        },
+        {
+          "id": 5,
+          "options": ["through", "despite", "beneath", "beyond", "against"],
+          "answer": "through",
+          "explanation": "'Through' indicates the mechanism or process ('through evapotranspiration') by which cooling occurs."
+        },
+        {
+          "id": 6,
+          "options": ["Besides", "Instead", "Whereas", "Unless", "Otherwise"],
+          "answer": "Besides",
+          "explanation": "'Besides' + gerund ('lowering') means 'in addition to', linking energy savings with ecological benefits."
+        }
+      ]
+    },
+    {
+      "id": "ir-step-2",
+      "part": 2,
+      "type": "complete_the_passage",
+      "prompt": "Select the best sentence to complete the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "Empirical field studies from major cities confirm that these botanical interventions yield measurable thermal and hydrological benefits.",
+        "Nevertheless, most municipal governments have completely abandoned rooftop gardening projects due to structural collapses.",
+        "Migratory birds typically prefer nesting on bare asphalt rooftops where predators cannot hide among shrubs.",
+        "Solar radiation levels in rural agricultural valleys have risen faster than those in dense industrial centers."
+      ],
+      "answer": "Empirical field studies from major cities confirm that these botanical interventions yield measurable thermal and hydrological benefits.",
+      "explanation": "The first paragraph introduces green roofs, and the second paragraph provides empirical data on temperature and stormwater reduction."
+    },
+    {
+      "id": "ir-step-3",
+      "part": 3,
+      "type": "highlight_the_answer",
+      "prompt": "Highlight text in the passage to answer the question below",
+      "question": "By what biological mechanism do plants cool the air around them?",
+      "passageTitle": "PASSAGE",
+      "answer": "evapotranspiration, a natural process in which plants release water vapor through their leaves",
+      "acceptableSubstrings": [
+        "evapotranspiration",
+        "release water vapor through their leaves"
+      ],
+      "explanation": "The first paragraph explicitly defines the cooling mechanism as 'evapotranspiration, a natural process in which plants release water vapor through their leaves'."
+    },
+    {
+      "id": "ir-step-4",
+      "part": 3,
+      "type": "highlight_the_answer",
+      "prompt": "Highlight text in the passage to answer the question below",
+      "question": "How do rooftop soil layers assist city infrastructure during severe rainfall?",
+      "passageTitle": "PASSAGE",
+      "answer": "retaining up to seventy percent of stormwater runoff before it could overwhelm municipal drainage pipes",
+      "acceptableSubstrings": [
+        "retaining up to seventy percent of stormwater runoff",
+        "acted as natural sponges during heavy rainstorms"
+      ],
+      "explanation": "The final sentence explains that soil layers act as sponges, 'retaining up to seventy percent of stormwater runoff before it could overwhelm municipal drainage pipes'."
+    },
+    {
+      "id": "ir-step-5",
+      "part": 3,
+      "type": "identify_the_idea",
+      "prompt": "Select the idea that is expressed in the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "Incorporating vegetation into urban architecture helps mitigate excess heat, manage rainwater, and support local wildlife.",
+        "Replacing all city streets with underground tunnels is the only effective way to eliminate the urban heat island effect.",
+        "Rooftop gardens increase building cooling expenses during the summer because damp soil traps solar heat.",
+        "Drainage pipes in Toronto and Singapore no longer require maintenance thanks to native pollinator habitats."
+      ],
+      "answer": "Incorporating vegetation into urban architecture helps mitigate excess heat, manage rainwater, and support local wildlife.",
+      "explanation": "The passage synthesizes cooling via evapotranspiration/shade, absorbing stormwater runoff, and creating habitats for wildlife."
+    },
+    {
+      "id": "ir-step-6",
+      "part": 3,
+      "type": "title_the_passage",
+      "prompt": "Select the best title for the passage",
+      "passageTitle": "PASSAGE",
+      "options": [
+        "Cooling Concrete: How Green Architecture Combats Urban Heat and Runoff",
+        "A History of Municipal Drainage Engineering in North America",
+        "Why Migratory Birds Are Leaving Rural Forests for City Centers",
+        "The Chemical Composition of Modern Asphalt and Roofing Materials"
+      ],
+      "answer": "Cooling Concrete: How Green Architecture Combats Urban Heat and Runoff",
+      "explanation": "This title captures the core environmental challenges (heat and runoff) and the architectural solutions analyzed."
+    }
+  ]
+}
