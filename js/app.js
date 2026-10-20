@@ -1,7 +1,6 @@
 import {
   BUILTIN_MANIFEST,
   FALLBACK_PACKS,
-  UPCOMING_SECTIONS,
   LLM_PROMPT_TEMPLATE,
 } from './default-packs.js';
 
@@ -16,11 +15,12 @@ const state = {
 
   // Practice session state
   currentQuestionIndex: 0,
-  openBlankId: 1, // Default open blank #1 for Part 1 to match screenshot
+  openBlankId: 1, // Default open blank #1 for Part 1
   focusedOptionIndex: 0,
   answers: {}, // { [questionId]: { [blankId]: word } or string }
   isGradedCurrentQuestion: false,
-  feedbackState: null, // null | { status: 'correct' | 'partially-correct' | 'incorrect', message, detailsHtml }
+  feedbackState: null,
+  showTryAgainColors: false, // Highlights correct/incorrect in passage after Try Again
   remainingSeconds: 458,
   timerInterval: null,
   showFinalResults: false,
@@ -124,7 +124,6 @@ export function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice
       };
     }
 
-    // Multiple-choice types: complete_the_passage, identify_the_idea, title_the_passage
     const options = Array.isArray(q.options || q.choices)
       ? (q.options || q.choices).map(String)
       : [];
@@ -152,7 +151,6 @@ export function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice
     };
   });
 
-  // Extract or build cohesive paragraph1 and paragraph2
   let paragraph1 = data.paragraph1 || '';
   let paragraph2 = data.paragraph2 || '';
 
@@ -278,7 +276,7 @@ async function ensurePackLoaded(packId) {
       console.warn(`Could not fetch ${meta.file}`, err);
     }
   }
-  return state.loadedPacks['firefighters-screenshot'];
+  return state.loadedPacks['firefighters-screenshot'] || FALLBACK_PACKS['firefighters-screenshot'];
 }
 
 async function handleUrlParameters() {
@@ -325,80 +323,45 @@ async function handleUrlParameters() {
    ========================================================================== */
 function renderHub() {
   const packsContainer = document.getElementById('packs-grid');
-  const modulesContainer = document.getElementById('modules-grid');
+  if (!packsContainer) return;
 
-  if (packsContainer) {
-    packsContainer.innerHTML = state.packsMeta
-      .map((meta) => {
-        const isActive = meta.id === state.activePackId;
-        const mins = Math.floor((meta.timeLimitSeconds || 458) / 60);
-        const secs = String((meta.timeLimitSeconds || 458) % 60).padStart(2, '0');
-        return `
-          <article class="pack-card ${isActive ? 'active' : ''}" data-pack-id="${escapeHtml(meta.id)}">
-            <div>
-              <div class="pack-card-top">
-                <span class="pack-badge">${escapeHtml(meta.difficulty || 'B2 • Intermediate')}</span>
-                ${
-                  isActive
-                    ? '<span class="pack-badge">Active</span>'
-                    : meta.isCustom
-                      ? '<span class="pack-badge">Custom</span>'
-                      : ''
-                }
-              </div>
-              <h3 class="pack-title">${escapeHtml(meta.title)}</h3>
-              <p class="pack-desc">${escapeHtml(meta.description || '')}</p>
-            </div>
-            <div class="pack-meta">
-              <span>📋 ${meta.questionCount || 6} Questions • ⏱ ${mins}:${secs}</span>
-              <span style="color: var(--duo-blue); font-weight: 800;">Practice →</span>
-            </div>
-          </article>
-        `;
-      })
-      .join('');
-
-    packsContainer.querySelectorAll('.pack-card').forEach((card) => {
-      card.addEventListener('click', () => {
-        const packId = card.getAttribute('data-pack-id');
-        state.activePackId = packId;
-        renderHub();
-        startPracticeSession(packId);
-      });
-    });
-  }
-
-  if (modulesContainer) {
-    modulesContainer.innerHTML = UPCOMING_SECTIONS.map((mod) => {
-      const isLive = mod.status === 'live';
+  packsContainer.innerHTML = state.packsMeta
+    .map((meta) => {
+      const isActive = meta.id === state.activePackId;
+      const mins = Math.floor((meta.timeLimitSeconds || 458) / 60);
+      const secs = String((meta.timeLimitSeconds || 458) % 60).padStart(2, '0');
       return `
-        <article class="module-card ${isLive ? 'module-ready' : 'module-upcoming'}" data-module-id="${mod.id}">
-          <div class="module-icon-row">
-            <div class="module-icon" style="background: ${mod.iconBg}">${mod.icon}</div>
-            <span class="module-status-tag ${isLive ? 'status-live' : 'status-soon'}">${escapeHtml(
-              mod.badgeText
-            )}</span>
+        <article class="pack-card ${isActive ? 'active' : ''}" data-pack-id="${escapeHtml(meta.id)}">
+          <div>
+            <div class="pack-card-top">
+              <span class="pack-badge">${escapeHtml(meta.difficulty || 'B2 • Intermediate')}</span>
+              ${
+                isActive
+                  ? '<span class="pack-badge">Active</span>'
+                  : meta.isCustom
+                    ? '<span class="pack-badge">Custom</span>'
+                    : ''
+              }
+            </div>
+            <h3 class="pack-title">${escapeHtml(meta.title)}</h3>
+            <p class="pack-desc">${escapeHtml(meta.description || '')}</p>
           </div>
-          <h3 class="module-name">${escapeHtml(mod.name)}</h3>
-          <p class="module-summary">${escapeHtml(mod.summary)}</p>
-          <div class="module-footer">${escapeHtml(mod.footerText)}</div>
+          <div class="pack-meta">
+            <span>📋 ${meta.questionCount || 6} Questions • ⏱ ${mins}:${secs}</span>
+            <span style="color: var(--duo-blue); font-weight: 800;">Start Practice →</span>
+          </div>
         </article>
       `;
-    }).join('');
+    })
+    .join('');
 
-    modulesContainer.querySelectorAll('.module-card').forEach((card) => {
-      card.addEventListener('click', () => {
-        const modId = card.getAttribute('data-module-id');
-        if (modId === 'interactive-reading') {
-          startPracticeSession(state.activePackId);
-        } else {
-          showToast(
-            `${modId.replace(/-/g, ' ')} template ready for future Duolingo test expansion!`
-          );
-        }
-      });
+  packsContainer.querySelectorAll('.pack-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const packId = card.getAttribute('data-pack-id');
+      state.activePackId = packId;
+      startPracticeSession(packId);
     });
-  }
+  });
 }
 
 /* ==========================================================================
@@ -412,8 +375,11 @@ async function startPracticeSession(packId) {
   state.answers = {};
   state.isGradedCurrentQuestion = false;
   state.feedbackState = null;
+  state.showTryAgainColors = false;
   state.showFinalResults = false;
   state.remainingSeconds = pack.timeLimitSeconds || 458;
+
+  hideFinalResultsOverlay();
 
   // Open blank #1 for Part 1 to match reference screenshot
   const firstQ = pack.questions[0];
@@ -435,12 +401,17 @@ function switchView(targetView) {
   const practiceEl = document.getElementById('practice-view');
 
   if (targetView === 'practice') {
+    hubEl.style.display = 'none';
     hubEl.hidden = true;
+    practiceEl.style.display = 'flex';
     practiceEl.hidden = false;
   } else {
     stopTimer();
-    hubEl.hidden = false;
+    hideFinalResultsOverlay();
+    practiceEl.style.display = 'none';
     practiceEl.hidden = true;
+    hubEl.style.display = 'flex';
+    hubEl.hidden = false;
     renderHub();
   }
 }
@@ -477,7 +448,6 @@ function updateTimerDisplay() {
   clockEl.textContent = `${mins}:${secs}`;
   clockEl.classList.toggle('low-time', state.remainingSeconds <= 60);
 
-  // Dynamic remaining questions countdown: "for 6 questions" -> "for 5 questions" -> ...
   const remainingQuestions = state.activePack.questions.length - state.currentQuestionIndex;
   if (subEl) {
     subEl.textContent = `for ${remainingQuestions} question${remainingQuestions === 1 ? '' : 's'}`;
@@ -516,7 +486,6 @@ function renderPracticeCard() {
   passageTitleEl.textContent = q.passageTitle || 'PASSAGE';
   promptTitleEl.textContent = q.prompt;
 
-  // Render question UI according to DET Part
   if (q.part === 1 || q.type === 'complete_the_sentences') {
     renderPart1Cloze(q, passageContentEl, rightControlsEl);
   } else if (q.part === 2 || q.type === 'complete_the_passage') {
@@ -527,16 +496,19 @@ function renderPracticeCard() {
     renderPart3MultipleChoice(q, pack, passageContentEl, rightControlsEl);
   }
 
-  // Handle bottom drawer feedback vs submit button
   const feedbackDrawer = document.getElementById('det-feedback-drawer');
   const bottombar = document.getElementById('det-bottombar');
 
   if (state.isGradedCurrentQuestion && state.feedbackState) {
+    feedbackDrawer.style.display = 'flex';
     feedbackDrawer.hidden = false;
+    bottombar.style.display = 'none';
     bottombar.hidden = true;
     renderFeedbackDrawer(state.feedbackState);
   } else {
+    feedbackDrawer.style.display = 'none';
     feedbackDrawer.hidden = true;
+    bottombar.style.display = 'flex';
     bottombar.hidden = false;
     const isAnswered = checkIfQuestionAnswered(q);
     submitBtn.disabled = !isAnswered;
@@ -549,7 +521,6 @@ function renderPracticeCard() {
 function renderPart1Cloze(q, passageContentEl, rightControlsEl) {
   const qAns = state.answers[q.id] || {};
 
-  // 1. Passage with inline numbered blanks [1] _________
   const tokenRegex = /\{\{(\d+)\}\}/g;
   let lastIdx = 0;
   let match;
@@ -560,6 +531,7 @@ function renderPart1Cloze(q, passageContentEl, rightControlsEl) {
       frag.appendChild(document.createTextNode(q.passage.slice(lastIdx, match.index)));
     }
     const blankId = Number(match[1]);
+    const blankDef = q.blanks.find((b) => b.id === blankId);
     const chosenWord = qAns[blankId] || '';
     const isActive = state.openBlankId === blankId;
 
@@ -567,6 +539,13 @@ function renderPart1Cloze(q, passageContentEl, rightControlsEl) {
     let cls = 'inline-blank';
     if (isActive) cls += ' active';
     if (chosenWord) cls += ' filled';
+
+    // Show correct/incorrect highlights if Try Again was clicked
+    if (state.showTryAgainColors && blankDef && chosenWord) {
+      const isCorrect =
+        chosenWord.trim().toLowerCase() === blankDef.answer.trim().toLowerCase();
+      cls += isCorrect ? ' review-correct' : ' review-wrong';
+    }
 
     span.className = cls;
     span.setAttribute('data-blank-id', String(blankId));
@@ -594,7 +573,6 @@ function renderPart1Cloze(q, passageContentEl, rightControlsEl) {
   passageContentEl.innerHTML = '';
   passageContentEl.appendChild(frag);
 
-  // 2. Right Pane Dropdown Stack
   const stack = document.createElement('div');
   stack.className = 'det-dropdown-stack';
 
@@ -633,7 +611,6 @@ function renderPart1Cloze(q, passageContentEl, rightControlsEl) {
 
     group.appendChild(trigger);
 
-    // Expanded options menu with Duolingo blue outline
     if (isOpen) {
       const menu = document.createElement('div');
       menu.className = 'det-dropdown-menu';
@@ -696,48 +673,41 @@ function scrollToDropdownGroup(blankId) {
 }
 
 /* ==========================================================================
-   PART 2: CONNECTING SENTENCE (MATCHES Question part 2.png)
+   PART 2: CONNECTING SENTENCE
    ========================================================================== */
 function renderPart2ConnectingSentence(q, pack, passageContentEl, rightControlsEl) {
   const chosenSentence = state.answers[q.id] || '';
-
-  // Requirement: "Complete paragraph with correct answers are shown in Part 2 after answering Part 1 even if the user got it wrong"
   const paragraph1 = getCompletedParagraph1(pack);
   const paragraph2 = pack.paragraph2 || '';
 
   passageContentEl.className = 'det-passage-content';
   passageContentEl.innerHTML = '';
 
-  // 1. Paragraph 1 (completed text)
   const p1Node = document.createElement('p');
   p1Node.textContent = paragraph1;
   passageContentEl.appendChild(p1Node);
 
-  // 2. Connecting sentence slot (matches Question part 2.png)
   const slot = document.createElement('div');
   slot.className = `passage-connecting-slot ${chosenSentence ? '' : 'empty'}`;
   slot.textContent = chosenSentence || 'Select a sentence from the options on the right...';
   passageContentEl.appendChild(slot);
 
-  // 3. Paragraph 2
   if (paragraph2) {
     const p2Node = document.createElement('p');
     p2Node.textContent = paragraph2;
     passageContentEl.appendChild(p2Node);
   }
 
-  // Right pane: Radio buttons list
   renderRadioOptionsList(q, rightControlsEl);
 }
 
 /* ==========================================================================
-   PART 3: HIGHLIGHT QUESTIONS (MATCHES Question_Part 3.png & Incorrect.png)
+   PART 3: HIGHLIGHT QUESTIONS
    ========================================================================== */
 function renderPart3Highlight(q, pack, passageContentEl, rightControlsEl) {
   const selectedHighlight = state.answers[q.id] || '';
   const fullPassage = getFullCohesivePassage(pack);
 
-  // Render passage with text selection support
   passageContentEl.className = 'det-passage-content';
 
   if (selectedHighlight && fullPassage.includes(selectedHighlight)) {
@@ -811,7 +781,7 @@ function renderRadioOptionsList(q, rightControlsEl) {
 }
 
 /* ==========================================================================
-   PASSAGE HELPER FUNCTIONS (FULL COHESIVE TEXT GENERATION)
+   PASSAGE HELPERS
    ========================================================================== */
 function getCompletedParagraph1(pack) {
   if (pack.paragraph1) return pack.paragraph1;
@@ -853,6 +823,7 @@ function gradeCurrentQuestion() {
   if (!q) return;
 
   state.isGradedCurrentQuestion = true;
+  state.showTryAgainColors = false;
 
   if (q.type === 'complete_the_sentences') {
     const qAns = state.answers[q.id] || {};
@@ -872,16 +843,14 @@ function gradeCurrentQuestion() {
       state.feedbackState = {
         status: 'correct',
         title: 'Great job!',
-        buttonText: 'CONTINUE',
-        buttonClass: 'btn-feedback-green',
+        isPerfect: true,
         detailsHtml: '',
       };
     } else if (correctCount > 0) {
       state.feedbackState = {
         status: 'partially-correct',
         title: 'Partially correct',
-        buttonText: 'GOT IT',
-        buttonClass: 'btn-feedback-yellow',
+        isPerfect: false,
         sublabel: 'Correct Answer:',
         detailsHtml: tokensHtml,
       };
@@ -889,8 +858,7 @@ function gradeCurrentQuestion() {
       state.feedbackState = {
         status: 'incorrect',
         title: 'Incorrect',
-        buttonText: 'GOT IT',
-        buttonClass: 'btn-feedback-red',
+        isPerfect: false,
         sublabel: 'Correct Answer:',
         detailsHtml: tokensHtml,
       };
@@ -907,22 +875,19 @@ function gradeCurrentQuestion() {
       state.feedbackState = {
         status: 'correct',
         title: 'Great job!',
-        buttonText: 'CONTINUE',
-        buttonClass: 'btn-feedback-green',
+        isPerfect: true,
         detailsHtml: '',
       };
     } else {
       state.feedbackState = {
         status: 'incorrect',
         title: 'Incorrect',
-        buttonText: 'GOT IT',
-        buttonClass: 'btn-feedback-red',
+        isPerfect: false,
         sublabel: 'Correct Answer:',
         detailsHtml: `<span class="det-feedback-words">${escapeHtml(q.answer)}</span>`,
       };
     }
   } else {
-    // Multiple choice (Part 2 or Part 3)
     const userChoice = (state.answers[q.id] || '').trim().toLowerCase();
     const target = q.answer.trim().toLowerCase();
     const isCorrect = userChoice === target;
@@ -931,16 +896,14 @@ function gradeCurrentQuestion() {
       state.feedbackState = {
         status: 'correct',
         title: 'Great job!',
-        buttonText: 'CONTINUE',
-        buttonClass: 'btn-feedback-green',
+        isPerfect: true,
         detailsHtml: '',
       };
     } else {
       state.feedbackState = {
         status: 'incorrect',
         title: 'Incorrect',
-        buttonText: 'GOT IT',
-        buttonClass: 'btn-feedback-red',
+        isPerfect: false,
         sublabel: 'Correct Answer:',
         detailsHtml: `<span class="det-feedback-words">${escapeHtml(q.answer)}</span>`,
       };
@@ -978,6 +941,29 @@ function renderFeedbackDrawer(fb) {
     `;
   }
 
+  // Buttons: If correct, show CONTINUE. If wrong, give TRY AGAIN and NEXT QUESTION options
+  let buttonsHtml = '';
+  if (fb.isPerfect) {
+    buttonsHtml = `
+      <button type="button" id="btn-feedback-continue" class="det-feedback-btn btn-feedback-green">
+        CONTINUE
+      </button>
+    `;
+  } else {
+    const tryAgainClass =
+      fb.status === 'partially-correct' ? 'btn-feedback-yellow' : 'btn-feedback-red';
+    buttonsHtml = `
+      <div class="det-feedback-buttons">
+        <button type="button" id="btn-feedback-try-again" class="det-feedback-btn ${tryAgainClass}">
+          TRY AGAIN
+        </button>
+        <button type="button" id="btn-feedback-continue" class="det-feedback-btn btn-feedback-outline">
+          NEXT QUESTION →
+        </button>
+      </div>
+    `;
+  }
+
   drawer.innerHTML = `
     <div class="det-feedback-left">
       <div class="det-feedback-heading">
@@ -993,13 +979,19 @@ function renderFeedbackDrawer(fb) {
           : ''
       }
     </div>
-    <button type="button" id="btn-feedback-action" class="det-feedback-btn ${fb.buttonClass}">
-      ${escapeHtml(fb.buttonText)}
-    </button>
+    ${buttonsHtml}
   `;
 
-  document.getElementById('btn-feedback-action')?.addEventListener('click', () => {
+  document.getElementById('btn-feedback-continue')?.addEventListener('click', () => {
     advanceToNextQuestion();
+  });
+
+  document.getElementById('btn-feedback-try-again')?.addEventListener('click', () => {
+    // Dismiss drawer, reveal which blanks were right/wrong in passage, and let user fix them
+    state.isGradedCurrentQuestion = false;
+    state.feedbackState = null;
+    state.showTryAgainColors = true;
+    renderPracticeCard();
   });
 }
 
@@ -1007,6 +999,7 @@ function advanceToNextQuestion() {
   const pack = state.activePack;
   state.isGradedCurrentQuestion = false;
   state.feedbackState = null;
+  state.showTryAgainColors = false;
 
   if (state.currentQuestionIndex < pack.questions.length - 1) {
     state.currentQuestionIndex += 1;
@@ -1041,6 +1034,7 @@ function renderFinalResultsOverlay(pack) {
     document.querySelector('.det-card').appendChild(overlay);
   }
 
+  overlay.style.display = 'flex';
   overlay.hidden = false;
 
   let totalQuestions = pack.questions.length;
@@ -1134,23 +1128,29 @@ function renderFinalResultsOverlay(pack) {
   `;
 
   document.getElementById('btn-results-retry')?.addEventListener('click', () => {
+    hideFinalResultsOverlay();
     startPracticeSession(state.activePackId);
   });
   document.getElementById('btn-results-hub')?.addEventListener('click', () => {
+    hideFinalResultsOverlay();
     switchView('hub');
   });
 }
 
 function hideFinalResultsOverlay() {
   const overlay = document.getElementById('det-final-results');
-  if (overlay) overlay.hidden = true;
+  if (overlay) {
+    overlay.style.display = 'none';
+    overlay.hidden = true;
+    overlay.remove();
+  }
 }
 
 /* ==========================================================================
    EVENT HANDLERS & MODAL BINDINGS
    ========================================================================== */
 function bindGlobalEvents() {
-  document.getElementById('btn-hero-start')?.addEventListener('click', () => {
+  document.getElementById('btn-header-start-first')?.addEventListener('click', () => {
     startPracticeSession(state.activePackId);
   });
 
@@ -1162,16 +1162,14 @@ function bindGlobalEvents() {
     gradeCurrentQuestion();
   });
 
-  // Open Load JSON Modal
   const openJsonModalBtns = [
     document.getElementById('btn-nav-load-json'),
-    document.getElementById('btn-hero-load-json'),
+    document.getElementById('btn-header-load-json'),
   ];
   openJsonModalBtns.forEach((btn) => {
     btn?.addEventListener('click', () => openModal('json-modal'));
   });
 
-  // Open LLM Prompt Modal
   const openPromptModalBtns = [
     document.getElementById('btn-nav-llm-prompt'),
     document.getElementById('btn-hero-llm-prompt'),
@@ -1184,16 +1182,10 @@ function bindGlobalEvents() {
     });
   });
 
-  // Share Current Pack Link
   document.getElementById('btn-share-pack')?.addEventListener('click', () => {
     shareCurrentPack();
   });
 
-  document.getElementById('btn-export-json')?.addEventListener('click', () => {
-    exportCurrentPackJson();
-  });
-
-  // Close modals
   document.querySelectorAll('[data-close-modal]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const targetId = btn.getAttribute('data-close-modal');
@@ -1201,7 +1193,6 @@ function bindGlobalEvents() {
     });
   });
 
-  // File Upload & Drag-and-Drop
   const fileInput = document.getElementById('json-file-input');
   const dropzone = document.getElementById('json-dropzone');
   const jsonTextarea = document.getElementById('json-paste-textarea');
@@ -1224,7 +1215,6 @@ function bindGlobalEvents() {
     if (file) readUploadedJsonFile(file);
   });
 
-  // Confirm Load JSON from textarea
   document.getElementById('btn-confirm-load-json')?.addEventListener('click', () => {
     const rawText = jsonTextarea?.value?.trim();
     if (!rawText) {
@@ -1244,7 +1234,6 @@ function bindGlobalEvents() {
     }
   });
 
-  // Copy Prompt
   document.getElementById('btn-copy-llm-prompt')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(LLM_PROMPT_TEMPLATE);
@@ -1290,6 +1279,7 @@ function showModalError(msg) {
 function openModal(id) {
   const modal = document.getElementById(id);
   if (modal) {
+    modal.style.display = 'flex';
     modal.hidden = false;
     const errEl = document.getElementById('json-modal-error');
     if (errEl) errEl.hidden = true;
@@ -1298,7 +1288,10 @@ function openModal(id) {
 
 function closeModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.hidden = true;
+  if (modal) {
+    modal.style.display = 'none';
+    modal.hidden = true;
+  }
 }
 
 async function shareCurrentPack() {
@@ -1323,25 +1316,16 @@ async function shareCurrentPack() {
   }
 }
 
-async function exportCurrentPackJson() {
-  const pack = await ensurePackLoaded(state.activePackId);
-  const blob = new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `${pack.id || 'duolingo-prep-questions'}.json`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showToast(`Downloaded ${a.download}`);
-}
-
 let toastTimeout = null;
 function showToast(message) {
   const toast = document.getElementById('toast-notification');
   if (!toast) return;
   toast.textContent = message;
+  toast.style.display = 'block';
   toast.hidden = false;
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
+    toast.style.display = 'none';
     toast.hidden = true;
   }, 3600);
 }

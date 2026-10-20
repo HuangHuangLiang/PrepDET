@@ -199,98 +199,271 @@ export const FALLBACK_PACKS = {
       },
     ],
   },
+  'full-interactive-reading': {
+    id: 'full-interactive-reading',
+    title: 'Urban Ecology: Complete Interactive Reading Set',
+    section: 'interactive-reading',
+    difficulty: 'B2–C1 • Upper-Intermediate',
+    timeLimitSeconds: 480,
+    paragraph1:
+      'As metropolitan areas expand across the globe, concrete pavements and dark rooftops absorb significant amounts of solar radiation, creating what scientists call the urban heat island effect. Downtown neighborhoods often experience temperatures several degrees higher than surrounding rural landscapes, particularly after sunset. To counteract this phenomenon, urban planners have begun integrating green roofs and tree canopies into municipal building codes. Vegetated surfaces cool the surrounding air through evapotranspiration, a natural process in which plants release water vapor through their leaves. Besides lowering summer cooling costs for residents, these green corridors provide vital habitats for migratory birds and native pollinators.',
+    paragraph2:
+      'Researchers monitoring retrofitted commercial districts in Singapore and Toronto found that buildings with dense rooftop vegetation reduced peak roof membrane temperatures by up to twenty degrees Celsius. Furthermore, the soil layers atop these structures acted as natural sponges during heavy rainstorms, retaining up to seventy percent of stormwater runoff before it could overwhelm municipal drainage pipes.',
+    questions: [
+      {
+        id: 'ir-step-1',
+        part: 1,
+        type: 'complete_the_sentences',
+        prompt: 'Select the best option for each missing word',
+        passageTitle: 'PASSAGE',
+        passage:
+          'As metropolitan areas expand across the globe, concrete pavements and dark rooftops {{1}} significant amounts of solar radiation, creating what scientists call the urban heat island effect. Downtown neighborhoods often experience temperatures several degrees higher {{2}} surrounding rural landscapes, particularly after sunset. To {{3}} this phenomenon, urban planners have begun integrating green roofs and tree canopies {{4}} municipal building codes. Vegetated surfaces cool the surrounding air {{5}} evapotranspiration, a natural process in which plants release water vapor through their leaves. {{6}} lowering summer cooling costs for residents, these green corridors provide vital habitats for migratory birds and native pollinators.',
+        blanks: [
+          {
+            id: 1,
+            options: ['absorb', 'reflect', 'dissolve', 'compile', 'exert'],
+            answer: 'absorb',
+            explanation:
+              "Dark surfaces 'absorb' solar radiation, causing the urban heat island effect.",
+          },
+          {
+            id: 2,
+            options: ['than', 'from', 'over', 'as', 'to'],
+            answer: 'than',
+            explanation: "Comparative adjectives like 'higher' take 'than'.",
+          },
+          {
+            id: 3,
+            options: ['counteract', 'accelerate', 'endorse', 'provoke', 'imitate'],
+            answer: 'counteract',
+            explanation: "'Counteract' means to reduce harmful effects.",
+          },
+          {
+            id: 4,
+            options: ['into', 'onto', 'upon', 'with', 'under'],
+            answer: 'into',
+            explanation: "'Integrate into' is the standard prepositional collocation.",
+          },
+          {
+            id: 5,
+            options: ['through', 'despite', 'beneath', 'beyond', 'against'],
+            answer: 'through',
+            explanation: "'Through' indicates the mechanism of cooling.",
+          },
+          {
+            id: 6,
+            options: ['Besides', 'Instead', 'Whereas', 'Unless', 'Otherwise'],
+            answer: 'Besides',
+            explanation: "'Besides' + gerund means 'in addition to'.",
+          },
+        ],
+      },
+      {
+        id: 'ir-step-2',
+        part: 2,
+        type: 'complete_the_passage',
+        prompt: 'Select the best sentence to complete the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Empirical field studies from major cities confirm that these botanical interventions yield measurable thermal and hydrological benefits.',
+          'Nevertheless, most municipal governments have completely abandoned rooftop gardening projects due to structural collapses.',
+          'Migratory birds typically prefer nesting on bare asphalt rooftops where predators cannot hide among shrubs.',
+          'Solar radiation levels in rural agricultural valleys have risen faster than those in dense industrial centers.',
+        ],
+        answer:
+          'Empirical field studies from major cities confirm that these botanical interventions yield measurable thermal and hydrological benefits.',
+        explanation: 'Provides empirical transition between green roofs and city data.',
+      },
+      {
+        id: 'ir-step-3',
+        part: 3,
+        type: 'highlight_the_answer',
+        prompt: 'Highlight text in the passage to answer the question below',
+        question: 'By what biological mechanism do plants cool the air around them?',
+        passageTitle: 'PASSAGE',
+        answer:
+          'evapotranspiration, a natural process in which plants release water vapor through their leaves',
+        acceptableSubstrings: ['evapotranspiration', 'release water vapor through their leaves'],
+        explanation: "Defined explicitly in Paragraph 1 as 'evapotranspiration'.",
+      },
+      {
+        id: 'ir-step-4',
+        part: 3,
+        type: 'highlight_the_answer',
+        prompt: 'Highlight text in the passage to answer the question below',
+        question: 'How do rooftop soil layers assist city infrastructure during severe rainfall?',
+        passageTitle: 'PASSAGE',
+        answer:
+          'retaining up to seventy percent of stormwater runoff before it could overwhelm municipal drainage pipes',
+        acceptableSubstrings: [
+          'retaining up to seventy percent of stormwater runoff',
+          'natural sponges during heavy rainstorms',
+        ],
+        explanation: 'Paragraph 2 notes soil layers retain up to seventy percent of runoff.',
+      },
+      {
+        id: 'ir-step-5',
+        part: 3,
+        type: 'identify_the_idea',
+        prompt: 'Select the idea that is expressed in the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Incorporating vegetation into urban architecture helps mitigate excess heat, manage rainwater, and support local wildlife.',
+          'Replacing all city streets with underground tunnels is the only effective way to eliminate the urban heat island effect.',
+          'Rooftop gardens increase building cooling expenses during the summer because damp soil traps solar heat.',
+          'Drainage pipes in Toronto and Singapore no longer require maintenance thanks to native pollinator habitats.',
+        ],
+        answer:
+          'Incorporating vegetation into urban architecture helps mitigate excess heat, manage rainwater, and support local wildlife.',
+        explanation: 'Accurately synthesizes heat mitigation, rainwater management, and ecology.',
+      },
+      {
+        id: 'ir-step-6',
+        part: 3,
+        type: 'title_the_passage',
+        prompt: 'Select the best title for the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Cooling Concrete: How Green Architecture Combats Urban Heat and Runoff',
+          'A History of Municipal Drainage Engineering in North America',
+          'Why Migratory Birds Are Leaving Rural Forests for City Centers',
+          'The Chemical Composition of Modern Asphalt and Roofing Materials',
+        ],
+        answer: 'Cooling Concrete: How Green Architecture Combats Urban Heat and Runoff',
+        explanation: 'Captures both the core problem and the green solutions discussed.',
+      },
+    ],
+  },
+  'science-technology-pack': {
+    id: 'science-technology-pack',
+    title: 'Sleep & Memory: Complete Interactive Reading Set',
+    section: 'interactive-reading',
+    difficulty: 'C1 • Advanced',
+    timeLimitSeconds: 480,
+    paragraph1:
+      'Neuroscientists have long recognized that sleep is not merely a passive state of physical rest. During slow-wave sleep, the brain actively transfers newly acquired experiences from the hippocampus to the neocortex for long-term storage. Participants who are deprived of adequate rest after learning a complex motor skill consistently perform worse than those who sleep uninterrupted for eight hours. Consequently, cramming throughout the night prior to an examination often undermines the very cognitive recall students hope to achieve.',
+    paragraph2:
+      'Subsequent neuroimaging investigations suggest that this memory stabilization operates in tandem with targeted synaptic pruning. While restful slumber consolidates critical pathways, non-essential neural associations formed during waking hours are systematically weakened, thereby restoring synaptic homeostasis and preserving cognitive capacity for subsequent learning.',
+    questions: [
+      {
+        id: 'c1-sleep-cloze',
+        part: 1,
+        type: 'complete_the_sentences',
+        prompt: 'Select the best option for each missing word',
+        passageTitle: 'PASSAGE',
+        passage:
+          'Neuroscientists have long recognized that sleep is {{1}} merely a passive state of physical rest. During slow-wave sleep, the brain actively {{2}} newly acquired experiences from the hippocampus to the neocortex for long-term storage. Participants who are {{3}} of adequate rest after learning a complex motor skill consistently perform worse than {{4}} who sleep uninterrupted for eight hours. Consequently, cramming throughout the night {{5}} an examination often undermines the very cognitive recall students hope to {{6}}.',
+        blanks: [
+          {
+            id: 1,
+            options: ['not', 'none', 'never', 'neither', 'nothing'],
+            answer: 'not',
+            explanation: "'Not merely' is the correlative adverbial phrase.",
+          },
+          {
+            id: 2,
+            options: ['transfers', 'translates', 'transcends', 'transacts', 'transpires'],
+            answer: 'transfers',
+            explanation: "'Transfers' accurately describes relaying memory traces.",
+          },
+          {
+            id: 3,
+            options: ['deprived', 'denied', 'deducted', 'detached', 'depleted'],
+            answer: 'deprived',
+            explanation: "'Deprived of' means prevented from having necessary rest.",
+          },
+          {
+            id: 4,
+            options: ['those', 'them', 'these', 'whom', 'which'],
+            answer: 'those',
+            explanation: "'Those who sleep...' is the formal demonstrative pronoun.",
+          },
+          {
+            id: 5,
+            options: ['prior to', 'owing to', 'regardless of', 'in lieu of', 'by means of'],
+            answer: 'prior to',
+            explanation: "'Prior to' is formal for 'before'.",
+          },
+          {
+            id: 6,
+            options: ['achieve', 'acquire', 'appease', 'ascribe', 'allege'],
+            answer: 'achieve',
+            explanation: "'Achieve recall' is the appropriate academic collocation.",
+          },
+        ],
+      },
+      {
+        id: 'c1-sleep-connecting',
+        part: 2,
+        type: 'complete_the_passage',
+        prompt: 'Select the best sentence to complete the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Subsequent neuroimaging investigations suggest that this memory stabilization operates in tandem with targeted synaptic pruning.',
+          'Medical doctors therefore advise university students to ingest excessive caffeine before midnight.',
+          'Hippocampal neurons completely cease electrical firing once slow-wave sleep commences.',
+          'Motor skill acquisition is virtually impossible unless learned during childhood.',
+        ],
+        answer:
+          'Subsequent neuroimaging investigations suggest that this memory stabilization operates in tandem with targeted synaptic pruning.',
+        explanation: 'Connects memory consolidation to synaptic pruning.',
+      },
+      {
+        id: 'c1-sleep-highlight-1',
+        part: 3,
+        type: 'highlight_the_answer',
+        prompt: 'Highlight text in the passage to answer the question below',
+        question: 'To which brain region are memory traces transferred for long-term storage?',
+        passageTitle: 'PASSAGE',
+        answer: 'neocortex',
+        acceptableSubstrings: ['the neocortex', 'neocortex'],
+        explanation: "Transfers memories 'from the hippocampus to the neocortex'.",
+      },
+      {
+        id: 'c1-sleep-highlight-2',
+        part: 3,
+        type: 'highlight_the_answer',
+        prompt: 'Highlight text in the passage to answer the question below',
+        question: 'What happens to non-essential neural associations during restful slumber?',
+        passageTitle: 'PASSAGE',
+        answer: 'systematically weakened',
+        acceptableSubstrings: ['are systematically weakened', 'systematically weakened'],
+        explanation: 'Non-essential associations are systematically weakened.',
+      },
+      {
+        id: 'c1-sleep-main-idea',
+        part: 3,
+        type: 'identify_the_idea',
+        prompt: 'Select the idea that is expressed in the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Sleep is an active neurological phase that both consolidates vital memories and eliminates superfluous connections.',
+          'Cramming without sleep improves examination performance by keeping neural pathways perpetually active.',
+          'Synaptic pruning only occurs when an individual is engaged in intense physical exercise.',
+          'The hippocampus is the permanent repository for all human long-term memories.',
+        ],
+        answer:
+          'Sleep is an active neurological phase that both consolidates vital memories and eliminates superfluous connections.',
+        explanation: 'Details how sleep consolidates memories and prunes associations.',
+      },
+      {
+        id: 'c1-sleep-title',
+        part: 3,
+        type: 'title_the_passage',
+        prompt: 'Select the best title for the passage',
+        passageTitle: 'PASSAGE',
+        options: [
+          'Beyond Rest: The Dual Neurological Work of Sleep in Memory and Pruning',
+          'The Economic Costs of Nighttime Examinations in Universities',
+          'Why the Human Hippocampus Does Not Require Oxygen During Slumber',
+          'A Comprehensive Guide to Improving Athletic Performance Through Diet'
+        ],
+        answer: 'Beyond Rest: The Dual Neurological Work of Sleep in Memory and Pruning',
+        explanation: 'Accurately reflects memory transfer and synaptic pruning.',
+      },
+    ],
+  },
 };
-
-export const UPCOMING_SECTIONS = [
-  {
-    id: 'interactive-reading',
-    name: 'Interactive Reading',
-    status: 'live',
-    badgeText: 'Ready to Practice',
-    icon: '📖',
-    iconBg: '#d7ffb8',
-    summary:
-      'Part 1: 6~7 cloze words. Part 2: 1 connecting sentence. Part 3: 2 highlights, main idea & best title.',
-    footerText: 'Launch Practice →',
-  },
-  {
-    id: 'read-and-complete',
-    name: 'Read and Complete',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '🔤',
-    iconBg: '#ddf4ff',
-    summary:
-      'Type the missing letters to complete damaged words within a short academic paragraph (3:00 timer).',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'read-and-select',
-    name: 'Read and Select',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '✅',
-    iconBg: '#fff5d6',
-    summary:
-      'Decide whether each displayed English word is a real dictionary word or a pseudoword within 5 seconds.',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'listen-and-type',
-    name: 'Listen and Type',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '🎧',
-    iconBg: '#f3e5ff',
-    summary:
-      'Listen to a spoken statement (up to 3 replays) and transcribe the exact sentence within 60 seconds.',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'interactive-listening',
-    name: 'Interactive Listening',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '💬',
-    iconBg: '#ddf4ff',
-    summary:
-      'Participate in an academic conversation with a professor or peer, then write a 75-second summary.',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'write-about-the-photo',
-    name: 'Write About the Photo',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '🖼️',
-    iconBg: '#ffdfe0',
-    summary:
-      'Write a descriptive paragraph about an image in 60 seconds with word-count and rubric feedback.',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'interactive-writing',
-    name: 'Interactive Writing',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '✍️',
-    iconBg: '#fff5d6',
-    summary:
-      'Respond to a prompt for 5 minutes, then write a follow-up response for 3 minutes addressing a new angle.',
-    footerText: 'JSON Schema Planned',
-  },
-  {
-    id: 'speaking-tasks',
-    name: 'Read / Listen, Then Speak',
-    status: 'soon',
-    badgeText: 'Planned Module',
-    icon: '🎙️',
-    iconBg: '#f3e5ff',
-    summary:
-      'Record 90-second spoken responses to written or audio prompts with local audio playback and self-grading.',
-    footerText: 'JSON Schema Planned',
-  },
-];
 
 export const LLM_PROMPT_TEMPLATE = `You are an expert test-prep content creator for the Duolingo English Test (DET) "Interactive Reading" section.
 
