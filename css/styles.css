@@ -1053,27 +1053,39 @@ textarea {
 .det-feedback-buttons {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-shrink: 0;
 }
 
 .det-feedback-btn {
-  min-width: 130px;
-  height: 46px;
-  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 140px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 14px;
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
+  box-sizing: border-box;
   color: #ffffff;
   border: none;
   cursor: pointer;
   user-select: none;
-  transition: transform 0.08s ease, filter 0.15s ease;
+  line-height: 1;
+  transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.08s ease;
+}
+
+.det-feedback-btn .btn-feedback-text {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  transform: translateY(1px); /* Optical adjustment: perfectly centers Nunito all-caps text */
 }
 
 .det-feedback-btn:hover {
@@ -1086,28 +1098,50 @@ textarea {
 
 .btn-feedback-green {
   background-color: var(--duo-green);
-  border-bottom: 4px solid var(--duo-green-dark);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 0 var(--duo-green-dark);
+}
+
+.btn-feedback-green:active {
+  box-shadow: 0 2px 0 var(--duo-green-dark);
 }
 
 .btn-feedback-yellow {
   background-color: var(--duo-yellow);
-  border-bottom: 4px solid var(--duo-yellow-dark);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 0 var(--duo-yellow-dark);
+}
+
+.btn-feedback-yellow:active {
+  box-shadow: 0 2px 0 var(--duo-yellow-dark);
 }
 
 .btn-feedback-red {
   background-color: var(--duo-red);
-  border-bottom: 4px solid var(--duo-red-dark);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 0 var(--duo-red-dark);
+}
+
+.btn-feedback-red:active {
+  box-shadow: 0 2px 0 var(--duo-red-dark);
 }
 
 .btn-feedback-outline {
   background-color: #ffffff;
   color: var(--det-text-main);
-  border: 2px solid rgba(0, 0, 0, 0.15);
-  border-bottom: 4px solid rgba(0, 0, 0, 0.25);
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 3px 0 #cfcfcf;
 }
 
 .btn-feedback-outline:hover {
   background-color: #f7f7f7;
+}
+
+.btn-feedback-outline:active {
+  box-shadow: 0 1px 0 #cfcfcf;
 }
 
 /* ==========================================================================

@@ -483,6 +483,7 @@ Generate a complete Interactive Reading practice set in valid JSON following the
    - \`paragraph2\`: 70–100 words continuing the topic.
 2. In Part 2, the completed Paragraph 1 (with 100% correct answers filled in) is displayed, followed by a connecting sentence slot, followed by Paragraph 2.
 3. In Part 3, the entire unified passage (Paragraph 1 + correct connecting sentence + Paragraph 2) is displayed for text highlighting and high-level comprehension questions.
+4. **Answer Randomization**: In the \`options\` arrays, do NOT always place the correct answer as the first option. Distribute correct answers across varying positions (first, middle, last).
 
 ### Required JSON Schema
 {
@@ -605,6 +606,50 @@ const state = {
 };
 
 /* ==========================================================================
+   RANDOMIZATION / SHUFFLE UTILITIES
+   ========================================================================== */
+function shuffleArray(arr) {
+  if (!Array.isArray(arr)) return [];
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function shufflePackOptions(pack) {
+  if (!pack || !Array.isArray(pack.questions)) return;
+  pack.questions.forEach((q) => {
+    // 1. Part 1: cloze blank options
+    if (Array.isArray(q.blanks)) {
+      q.blanks.forEach((b) => {
+        if (Array.isArray(b.options) && b.options.length > 1) {
+          if (
+            b.answer &&
+            !b.options.some((opt) => opt.trim().toLowerCase() === b.answer.trim().toLowerCase())
+          ) {
+            b.options.push(b.answer);
+          }
+          b.options = shuffleArray(b.options);
+        }
+      });
+    }
+
+    // 2. Part 2 & Part 3: Multiple choice options
+    if (Array.isArray(q.options) && q.options.length > 1) {
+      if (
+        q.answer &&
+        !q.options.some((opt) => opt.trim().toLowerCase() === q.answer.trim().toLowerCase())
+      ) {
+        q.options.push(q.answer);
+      }
+      q.options = shuffleArray(q.options);
+    }
+  });
+}
+
+/* ==========================================================================
    JSON NORMALIZER
    ========================================================================== */
 function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack') {
@@ -668,10 +713,17 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
         if (typeof answer === 'number' && options[answer] !== undefined) {
           answer = options[answer];
         }
+        const answerStr = String(answer ?? options[0] ?? '');
+        if (
+          answerStr &&
+          !options.some((opt) => opt.trim().toLowerCase() === answerStr.trim().toLowerCase())
+        ) {
+          options.push(answerStr);
+        }
         return {
           id: blankNum,
-          options,
-          answer: String(answer ?? options[0] ?? ''),
+          options: shuffleArray(options),
+          answer: answerStr,
           explanation: b.explanation || b.reason || '',
         };
       });
@@ -709,6 +761,13 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
     if (typeof answer === 'number' && options[answer] !== undefined) {
       answer = options[answer];
     }
+    const answerStr = String(answer ?? options[0] ?? '');
+    if (
+      answerStr &&
+      !options.some((opt) => opt.trim().toLowerCase() === answerStr.trim().toLowerCase())
+    ) {
+      options.push(answerStr);
+    }
 
     const defaultPrompts = {
       complete_the_passage: 'Select the best sentence to complete the passage',
@@ -723,8 +782,8 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
       prompt: q.prompt || defaultPrompts[qType] || 'Select the best option',
       passageTitle: q.passageTitle || 'PASSAGE',
       passage,
-      options,
-      answer: String(answer ?? options[0] ?? ''),
+      options: shuffleArray(options),
+      answer: answerStr,
       explanation: q.explanation || '',
     };
   });
@@ -946,6 +1005,7 @@ function renderHub() {
    ========================================================================== */
 async function startPracticeSession(packId) {
   const pack = await ensurePackLoaded(packId);
+  shufflePackOptions(pack);
   state.activePackId = pack.id;
   state.activePack = pack;
   state.currentQuestionIndex = 0;
@@ -1542,7 +1602,7 @@ function renderFeedbackDrawer(fb) {
   if (fb.isPerfect) {
     buttonsHtml = `
       <button type="button" id="btn-feedback-continue" class="det-feedback-btn btn-feedback-green">
-        CONTINUE
+        <span class="btn-feedback-text">CONTINUE</span>
       </button>
     `;
   } else {
@@ -1551,10 +1611,10 @@ function renderFeedbackDrawer(fb) {
     buttonsHtml = `
       <div class="det-feedback-buttons">
         <button type="button" id="btn-feedback-try-again" class="det-feedback-btn ${tryAgainClass}">
-          TRY AGAIN
+          <span class="btn-feedback-text">TRY AGAIN</span>
         </button>
         <button type="button" id="btn-feedback-continue" class="det-feedback-btn btn-feedback-outline">
-          NEXT QUESTION →
+          <span class="btn-feedback-text">NEXT QUESTION →</span>
         </button>
       </div>
     `;

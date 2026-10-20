@@ -85,6 +85,7 @@ Generate a complete Interactive Reading practice set in valid JSON following the
   - 2 Highlight questions (`highlight_the_answer`) asking for specific phrases in the full text.
   - 1 Main Idea question (`identify_the_idea`) with 4 options.
   - 1 Best Title question (`title_the_passage`) with 4 options.
+- **Answer Randomization**: In the `options` arrays, do NOT always place the correct answer as the first option. Distribute correct answers across varying positions (first, middle, last).
 
 ### JSON Schema
 {

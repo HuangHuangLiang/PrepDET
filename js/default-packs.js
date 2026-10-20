@@ -483,6 +483,7 @@ Generate a complete Interactive Reading practice set in valid JSON following the
    - \`paragraph2\`: 70–100 words continuing the topic.
 2. In Part 2, the completed Paragraph 1 (with 100% correct answers filled in) is displayed, followed by a connecting sentence slot, followed by Paragraph 2.
 3. In Part 3, the entire unified passage (Paragraph 1 + correct connecting sentence + Paragraph 2) is displayed for text highlighting and high-level comprehension questions.
+4. **Answer Randomization**: In the \`options\` arrays, do NOT always place the correct answer as the first option. Distribute correct answers across varying positions (first, middle, last).
 
 ### Required JSON Schema
 {
