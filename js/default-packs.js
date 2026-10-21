@@ -4,21 +4,21 @@
 export const SECTION_META = {
   'interactive-reading': {
     name: 'Interactive Reading',
-    icon: '📖',
+    icon: '',
     skill: 'reading',
     badge: 'Interactive Reading',
     description: 'Multi-part reading comprehension matching the 6-question DET format.'
   },
   'fill-in-the-blank': {
     name: 'Fill in the Blank',
-    icon: '✏️',
+    icon: '',
     skill: 'reading',
     badge: 'Read & Complete',
     description: 'C-Test letter-box completion for passages and single sentences.'
   },
   'read-and-select': {
     name: 'Read and Select',
-    icon: '✓/✕',
+    icon: '',
     skill: 'reading',
     badge: 'Read & Select',
     description: 'Distinguish real English vocabulary from plausible pseudo-words.'

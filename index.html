@@ -27,58 +27,35 @@
 
           <div class="hub-nav-actions">
             <button type="button" class="btn-duo btn-duo-outline" id="btn-nav-llm-prompt">
-              ✨ LLM Prompt
+              LLM Prompt
             </button>
             <button type="button" class="btn-duo btn-duo-outline" id="btn-nav-load-json">
-              📂 Load JSON
-            </button>
-            <button type="button" class="btn-duo btn-duo-blue" id="btn-share-pack">
-              🔗 Share Pack
+              Load JSON
             </button>
           </div>
         </div>
       </header>
 
       <main class="hub-container">
-        <!-- Skills Practice Navigator (Matched to Navigator.tiff) -->
+        <!-- Reading Practice Navigator (Matched to Navigator.tiff style) -->
         <div class="skills-navigator-card">
           <div class="skills-navigator-top">
-            <h2 class="skills-navigator-title">Skills Practice</h2>
+            <h2 class="skills-navigator-title">Reading Practice</h2>
             <div class="skills-tabs" role="tablist">
-              <button type="button" class="skills-tab active" data-skill-tab="all" role="tab" aria-selected="true">
+              <button type="button" class="skills-tab active" data-section-filter="all" role="tab" aria-selected="true">
                 全部題型
               </button>
-              <button type="button" class="skills-tab" data-skill-tab="speaking" role="tab" aria-selected="false">
-                SPEAKING
+              <button type="button" class="skills-tab" data-section-filter="interactive-reading" role="tab" aria-selected="false">
+                Interactive Reading
               </button>
-              <button type="button" class="skills-tab" data-skill-tab="writing" role="tab" aria-selected="false">
-                WRITING
+              <button type="button" class="skills-tab" data-section-filter="fill-in-the-blank" role="tab" aria-selected="false">
+                Fill in the Blank
               </button>
-              <button type="button" class="skills-tab" data-skill-tab="reading" role="tab" aria-selected="false">
-                READING
-              </button>
-              <button type="button" class="skills-tab" data-skill-tab="listening" role="tab" aria-selected="false">
-                LISTENING
+              <button type="button" class="skills-tab" data-section-filter="read-and-select" role="tab" aria-selected="false">
+                Read and Select
               </button>
             </div>
           </div>
-
-          <!-- Section Sub-filters -->
-          <div class="skills-subfilters" id="skills-subfilters">
-            <button type="button" class="subfilter-btn active" data-section-filter="all">All Question Types</button>
-            <button type="button" class="subfilter-btn" data-section-filter="interactive-reading">📖 Interactive Reading</button>
-            <button type="button" class="subfilter-btn" data-section-filter="fill-in-the-blank">✏️ Fill in the Blank</button>
-            <button type="button" class="subfilter-btn" data-section-filter="read-and-select">✓/✕ Read and Select</button>
-          </div>
-        </div>
-
-        <div id="skills-placeholder" class="skills-placeholder" hidden style="display: none;">
-          <div class="skills-placeholder-icon">🦉</div>
-          <h3 id="skills-placeholder-title" class="skills-placeholder-title">Module Coming Soon</h3>
-          <p id="skills-placeholder-text" class="skills-placeholder-text">This skill area is currently in active development for DuoPrep.</p>
-          <button type="button" class="btn-duo btn-duo-outline" id="btn-placeholder-load-json">
-            + Load Custom JSON
-          </button>
         </div>
 
         <!-- Question Packs Section -->
@@ -94,13 +71,13 @@
             </div>
             <div class="section-header-buttons">
               <button type="button" class="btn-duo btn-duo-green" id="btn-header-start-first">
-                ▶ Start Practice
+                Start Practice
               </button>
               <button type="button" class="btn-duo btn-duo-outline" id="btn-header-load-json">
-                + Upload / Paste JSON
+                Load JSON
               </button>
               <button type="button" class="btn-duo btn-duo-ghost" id="btn-hero-llm-prompt">
-                ✨ Prompt Generator →
+                Prompt Generator →
               </button>
             </div>
           </div>
@@ -278,7 +255,7 @@
         <div class="modal-body">
           <div id="json-dropzone" class="dropzone">
             <p style="font-weight: 700; color: var(--det-text-main); margin-bottom: 4px">
-              📂 Click to choose a <code>.json</code> file, or drag & drop it here
+              Click to choose a <code>.json</code> file, or drag & drop it here
             </p>
             <p style="font-size: 12.5px; color: var(--det-text-secondary)">
               Supports single passages, Complete the Sentences packs, or full 6-step Interactive
@@ -326,7 +303,7 @@
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="prompt-modal-title">
         <div class="modal-header">
           <h3 id="prompt-modal-title" class="modal-title">
-            ✨ Generate DET Practice Questions
+            Generate DET Practice Questions
           </h3>
           <button
             type="button"
@@ -343,9 +320,9 @@
             <div class="prompt-control-group">
               <label class="prompt-control-label">1. Choose Question Section:</label>
               <div class="prompt-pills-row" id="prompt-section-pills">
-                <button type="button" class="prompt-pill active" data-prompt-section="interactive-reading">📖 Interactive Reading</button>
-                <button type="button" class="prompt-pill" data-prompt-section="fill-in-the-blank">✏️ Fill in the Blank</button>
-                <button type="button" class="prompt-pill" data-prompt-section="read-and-select">✓/✕ Read and Select</button>
+                <button type="button" class="prompt-pill active" data-prompt-section="interactive-reading">Interactive Reading</button>
+                <button type="button" class="prompt-pill" data-prompt-section="fill-in-the-blank">Fill in the Blank</button>
+                <button type="button" class="prompt-pill" data-prompt-section="read-and-select">Read and Select</button>
               </div>
             </div>
 
@@ -386,7 +363,7 @@
             Close
           </button>
           <button type="button" class="btn-duo btn-duo-blue" id="btn-copy-llm-prompt">
-            📋 Copy Prompt
+            Copy Prompt
           </button>
         </div>
       </div>

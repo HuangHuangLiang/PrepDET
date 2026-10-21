@@ -4,21 +4,21 @@
 const SECTION_META = {
   'interactive-reading': {
     name: 'Interactive Reading',
-    icon: '📖',
+    icon: '',
     skill: 'reading',
     badge: 'Interactive Reading',
     description: 'Multi-part reading comprehension matching the 6-question DET format.'
   },
   'fill-in-the-blank': {
     name: 'Fill in the Blank',
-    icon: '✏️',
+    icon: '',
     skill: 'reading',
     badge: 'Read & Complete',
     description: 'C-Test letter-box completion for passages and single sentences.'
   },
   'read-and-select': {
     name: 'Read and Select',
-    icon: '✓/✕',
+    icon: '',
     skill: 'reading',
     badge: 'Read & Select',
     description: 'Distinguish real English vocabulary from plausible pseudo-words.'
@@ -1748,52 +1748,12 @@ function renderHub() {
 }
 
 function renderNavigator() {
-  // Update main skill tabs active state
   document.querySelectorAll('.skills-tab').forEach((tab) => {
-    const skill = tab.getAttribute('data-skill-tab');
-    const isActive = skill === state.selectedSkillTab;
+    const filter = tab.getAttribute('data-section-filter') || 'all';
+    const isActive = filter === state.selectedSectionFilter;
     tab.classList.toggle('active', isActive);
     tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
-
-  const subfiltersRow = document.getElementById('skills-subfilters');
-  const placeholder = document.getElementById('skills-placeholder');
-  const packsSection = document.getElementById('packs-section');
-
-  const isReadingSkill = state.selectedSkillTab === 'all' || state.selectedSkillTab === 'reading';
-
-  if (subfiltersRow) {
-    subfiltersRow.style.display = isReadingSkill ? 'flex' : 'none';
-    subfiltersRow.querySelectorAll('.subfilter-btn').forEach((btn) => {
-      const filter = btn.getAttribute('data-section-filter');
-      btn.classList.toggle('active', filter === state.selectedSectionFilter);
-    });
-  }
-
-  if (!isReadingSkill) {
-    if (placeholder) {
-      placeholder.style.display = 'block';
-      placeholder.hidden = false;
-      const titleEl = document.getElementById('skills-placeholder-title');
-      const textEl = document.getElementById('skills-placeholder-text');
-      const skillName = state.selectedSkillTab.toUpperCase();
-      if (titleEl) titleEl.textContent = `${skillName} Modules Coming Soon`;
-      if (textEl) textEl.textContent = `Interactive ${skillName} practice sets are currently in active development. You can click '+ Load Custom JSON' to import custom ${skillName} practice questions immediately.`;
-    }
-    if (packsSection) {
-      packsSection.style.display = 'none';
-      packsSection.hidden = true;
-    }
-  } else {
-    if (placeholder) {
-      placeholder.style.display = 'none';
-      placeholder.hidden = true;
-    }
-    if (packsSection) {
-      packsSection.style.display = 'block';
-      packsSection.hidden = false;
-    }
-  }
 }
 
 function renderPacksGrid() {
@@ -1803,21 +1763,18 @@ function renderPacksGrid() {
   if (!packsContainer) return;
 
   const filteredPacks = state.packsMeta.filter((meta) => {
-    if (state.selectedSkillTab !== 'all' && state.selectedSkillTab !== 'reading') {
-      return false;
-    }
     if (state.selectedSectionFilter === 'all') return true;
     return meta.section === state.selectedSectionFilter;
   });
 
   if (headingEl) {
     const titles = {
-      all: 'All Available Practice Question Sets',
-      'interactive-reading': 'Interactive Reading Question Sets',
-      'fill-in-the-blank': 'Fill in the Blank (Read & Complete) Sets',
-      'read-and-select': 'Read and Select (Vocabulary) Sets',
+      all: 'All Reading Practice Question Sets',
+      'interactive-reading': 'Interactive Reading Sets',
+      'fill-in-the-blank': 'Fill in the Blank (C-Test) Sets',
+      'read-and-select': 'Read and Select Sets',
     };
-    headingEl.textContent = titles[state.selectedSectionFilter] || 'Practice Question Sets';
+    headingEl.textContent = titles[state.selectedSectionFilter] || 'Reading Practice Question Sets';
   }
 
   if (subheadingEl) {
@@ -1828,10 +1785,9 @@ function renderPacksGrid() {
   if (filteredPacks.length === 0) {
     packsContainer.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #ffffff; border-radius: 16px; border: 2px dashed #e0e0e0;">
-        <div style="font-size: 36px; margin-bottom: 8px;">📂</div>
         <h3 style="font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--det-text-main); margin-bottom: 6px;">No question sets found for this filter</h3>
         <p style="font-size: 14px; color: var(--det-text-secondary); margin-bottom: 16px;">Click below to generate or load custom question banks in JSON.</p>
-        <button type="button" class="btn-duo btn-duo-green" onclick="openModal('json-modal')">+ Load JSON</button>
+        <button type="button" class="btn-duo btn-duo-green" onclick="openModal('json-modal')">Load JSON</button>
       </div>
     `;
     return;
@@ -1842,14 +1798,14 @@ function renderPacksGrid() {
       const isActive = meta.id === state.activePackId;
       const mins = Math.floor((meta.timeLimitSeconds || 300) / 60);
       const secs = String((meta.timeLimitSeconds || 300) % 60).padStart(2, '0');
-      const secInfo = SECTION_META[meta.section] || { icon: '📖', badge: meta.section };
+      const secInfo = SECTION_META[meta.section] || { icon: '', badge: meta.section };
 
       return `
         <article class="pack-card ${isActive ? 'active' : ''}" data-pack-id="${escapeHtml(meta.id)}">
           <div>
             <div class="pack-card-top">
               <span class="pack-badge-section pack-badge-${escapeHtml(meta.section)}">
-                ${secInfo.icon} ${escapeHtml(secInfo.badge)}
+                ${escapeHtml(secInfo.badge)}
               </span>
               <span class="pack-badge">${escapeHtml(meta.difficulty || 'B2 • Intermediate')}</span>
               ${meta.isCustom ? '<span class="pack-badge" style="background: #eef6ff; color: #1cb0f6;">Custom</span>' : ''}
@@ -1858,7 +1814,7 @@ function renderPacksGrid() {
             <p class="pack-desc">${escapeHtml(meta.description || '')}</p>
           </div>
           <div class="pack-meta">
-            <span>📋 ${meta.questionCount || 6} Questions • ⏱ ${mins}:${secs}</span>
+            <span>${meta.questionCount || 6} Questions • ${mins}:${secs}</span>
             <span style="color: var(--duo-blue); font-weight: 800;">Start Practice →</span>
           </div>
         </article>
@@ -2870,7 +2826,7 @@ function renderFinalResultsOverlay(pack) {
           <div style="font-size: 13.5px; color: var(--det-text-secondary); margin-bottom: 4px;">
             Your Answer: "${escapeHtml(userChoice || 'None')}" • Real Word: ${w.isReal ? 'Yes' : 'No'}
           </div>
-          ${w.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px;">💡 ${escapeHtml(w.explanation)}</div>` : ''}
+          ${w.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px;"><strong style="color: #333;">Explanation:</strong> ${escapeHtml(w.explanation)}</div>` : ''}
         </div>
       `;
     }).join('');
@@ -2883,7 +2839,7 @@ function renderFinalResultsOverlay(pack) {
           <div class="breakdown-item-top">
             <strong>Question ${idx + 1} (${escapeHtml(q.prompt || 'Fill in the Blank')})</strong>
           </div>
-          ${q.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px; margin-top: 6px;">💡 ${escapeHtml(q.explanation)}</div>` : ''}
+          ${q.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px; margin-top: 6px;"><strong style="color: #333;">Explanation:</strong> ${escapeHtml(q.explanation)}</div>` : ''}
         </div>
       `;
     }).join('');
@@ -2923,7 +2879,7 @@ function renderFinalResultsOverlay(pack) {
           <div style="font-size: 13.5px; color: var(--det-text-secondary); margin-bottom: 4px;">
             ${userDisplay}
           </div>
-          ${q.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px; margin-top: 6px;">💡 ${escapeHtml(q.explanation)}</div>` : ''}
+          ${q.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px; margin-top: 6px;"><strong style="color: #333;">Explanation:</strong> ${escapeHtml(q.explanation)}</div>` : ''}
         </div>
       `;
     }).join('');
@@ -2934,7 +2890,7 @@ function renderFinalResultsOverlay(pack) {
 
   overlay.innerHTML = `
     <div class="results-hero-card">
-      <div class="brand-badge" style="margin: 0 auto 16px; width: 48px; height: 48px; font-size: 26px;">🦉</div>
+      <div class="brand-badge" style="margin: 0 auto 16px; width: 48px; height: 48px; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center;">DET</div>
       <h2 class="results-hero-title">Practice Set Completed!</h2>
       <div class="results-stats-row">
         <div class="stat-box">
@@ -2985,19 +2941,10 @@ function hideFinalResultsOverlay() {
    EVENT HANDLERS & MODAL BINDINGS
    ========================================================================== */
 function bindGlobalEvents() {
-  // Navigator Main Tabs (Navigator.tiff)
+  // Navigator Reading Section Tabs
   document.querySelectorAll('.skills-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
-      const skill = tab.getAttribute('data-skill-tab');
-      state.selectedSkillTab = skill;
-      renderHub();
-    });
-  });
-
-  // Navigator Sub-filter Pills
-  document.querySelectorAll('.subfilter-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-section-filter');
+      const filter = tab.getAttribute('data-section-filter') || 'all';
       state.selectedSectionFilter = filter;
       renderHub();
     });
