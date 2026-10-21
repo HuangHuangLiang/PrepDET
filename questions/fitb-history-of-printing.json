@@ -1,0 +1,13 @@
+{
+  "id": "fitb-history-of-printing",
+  "section": "fill-in-the-blank",
+  "title": "The Printing Revolution (Academic C-Test)",
+  "description": "Scholarly C-Test text exploring how Gutenberg's movable-type press democratized knowledge across Europe.",
+  "difficulty": "C1 • Advanced",
+  "timeLimitSeconds": 180,
+  "passageTitle": "The Printing Revolution",
+  "prompt": "Complete the text with the correct words",
+  "format": "passage",
+  "text": "The invention of the movable-type printing press by Johannes Gutenberg in the fifteenth century transformed human communication. Before {{th|is}} innovation, {{boo|ks}} had {{t|o}} be {{cop|ied}} by {{ha|nd}}, a {{proc|ess}} that {{wa|s}} exceedingly {{sl|ow}} and {{cost|ly}}. As {{a}} result, {{know|ledge}} was {{restri|cted}} to {{a}} small {{eli|te}}. The {{spr|ead}} of {{prin|ting}} allowed {{ide|as}} to {{circu|late}} widely, {{foste|ring}} the {{scien|tific}} revolution across Europe.",
+  "explanation": "Advanced academic C-Test: supply the missing letters by analyzing grammatical structure, collocations, and contextual cohesion."
+}

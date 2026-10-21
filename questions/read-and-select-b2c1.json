@@ -1,0 +1,119 @@
+{
+  "id": "read-and-select-b2c1",
+  "section": "read-and-select",
+  "title": "Academic Vocabulary: Real vs Pseudo Words",
+  "description": "Evaluate 18 words to determine which are genuine English words and which are invented pseudo-words (matched to Read and Select screenshot).",
+  "difficulty": "B2–C1 • Upper-Intermediate",
+  "timeLimitSeconds": 90,
+  "timePerWordSeconds": 5,
+  "words": [
+    {
+      "id": "w1",
+      "word": "conducted",
+      "isReal": true,
+      "explanation": "'conducted' is a real English verb meaning organized and carried out (e.g., 'conducted research')."
+    },
+    {
+      "id": "w2",
+      "word": "plorify",
+      "isReal": false,
+      "explanation": "'plorify' is a pseudo-word with no meaning in standard English."
+    },
+    {
+      "id": "w3",
+      "word": "scrutinize",
+      "isReal": true,
+      "explanation": "'scrutinize' is a real English verb meaning to examine or inspect closely and thoroughly."
+    },
+    {
+      "id": "w4",
+      "word": "interruptionist",
+      "isReal": false,
+      "explanation": "'interruptionist' is an invented pseudo-word; standard English uses 'interrupter'."
+    },
+    {
+      "id": "w5",
+      "word": "indispensable",
+      "isReal": true,
+      "explanation": "'indispensable' is a real English adjective meaning absolutely necessary or essential."
+    },
+    {
+      "id": "w6",
+      "word": "preponderous",
+      "isReal": false,
+      "explanation": "'preponderous' is a pseudo-word blending 'ponderous' and 'preponderant'."
+    },
+    {
+      "id": "w7",
+      "word": "phenomenon",
+      "isReal": true,
+      "explanation": "'phenomenon' is a real English noun meaning a remarkable occurrence or observed fact."
+    },
+    {
+      "id": "w8",
+      "word": "reflact",
+      "isReal": false,
+      "explanation": "'reflact' is an incorrect pseudo-word; the genuine word is 'reflect'."
+    },
+    {
+      "id": "w9",
+      "word": "ambivalent",
+      "isReal": true,
+      "explanation": "'ambivalent' is a real English adjective meaning having mixed feelings or contradictory ideas."
+    },
+    {
+      "id": "w10",
+      "word": "reconsiliate",
+      "isReal": false,
+      "explanation": "'reconsiliate' is a pseudo-word; standard English uses 'reconcile'."
+    },
+    {
+      "id": "w11",
+      "word": "substantiate",
+      "isReal": true,
+      "explanation": "'substantiate' is a real English verb meaning to provide evidence to support or prove the truth of something."
+    },
+    {
+      "id": "w12",
+      "word": "glimpsy",
+      "isReal": false,
+      "explanation": "'glimpsy' is an invented pseudo-word; standard English uses 'glimpse' (noun/verb)."
+    },
+    {
+      "id": "w13",
+      "word": "deteriorate",
+      "isReal": true,
+      "explanation": "'deteriorate' is a real English verb meaning to become progressively worse."
+    },
+    {
+      "id": "w14",
+      "word": "transcendantalism",
+      "isReal": false,
+      "explanation": "'transcendantalism' is a misspelling/pseudo-form; the correct word is 'transcendentalism'."
+    },
+    {
+      "id": "w15",
+      "word": "ubiquitous",
+      "isReal": true,
+      "explanation": "'ubiquitous' is a real English adjective meaning present, appearing, or found everywhere."
+    },
+    {
+      "id": "w16",
+      "word": "compulsation",
+      "isReal": false,
+      "explanation": "'compulsation' is an invented pseudo-word; standard English uses 'compulsion'."
+    },
+    {
+      "id": "w17",
+      "word": "preliminary",
+      "isReal": true,
+      "explanation": "'preliminary' is a real English adjective denoting an action or event preceding or preparing for something fuller."
+    },
+    {
+      "id": "w18",
+      "word": "perplexion",
+      "isReal": false,
+      "explanation": "'perplexion' is a pseudo-word; standard English uses 'perplexity'."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "fitb-power-of-determination",
+  "section": "fill-in-the-blank",
+  "title": "The Power of Determination (Passage C-Test)",
+  "description": "Complete the missing half of words in this passage about grit and persistence (matched to Fill in blank long screenshot).",
+  "difficulty": "B2 • Upper-Intermediate",
+  "timeLimitSeconds": 180,
+  "passageTitle": "The Power of Determination",
+  "prompt": "Complete the text with the correct words",
+  "format": "passage",
+  "text": "Success is not as important as determination. Even {{i|f}} you {{fa|il}}, {{y|ou}} should {{a|ct}} to {{wo|rk}} your {{har|d}} to {{so|lve}} a {{pro|blem}}. In {{t|he}} end, that {{sk|ill}} will {{ta|ke}} you {{far|ther}} than {{succe|ss}} at {{every|thing}} you {{fa|ce}}. Success often requires some luck, but determination and hard work are within your control.",
+  "explanation": "Standard Duolingo C-Test rules: starting from sentence two, missing letters must be supplied based on contextual and grammatical clues."
+}

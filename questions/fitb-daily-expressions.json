@@ -1,0 +1,71 @@
+{
+  "id": "fitb-daily-expressions",
+  "section": "fill-in-the-blank",
+  "title": "Daily Expressions & Collocations (Sentence Set)",
+  "description": "Complete each sentence with the correct missing word (matched to Fill in the blank screenshot).",
+  "difficulty": "B1 • Intermediate",
+  "timeLimitSeconds": 120,
+  "format": "sentences",
+  "questions": [
+    {
+      "id": "fitb-s1",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "Waking up to the sound of birds outside my window puts me in a good {{mo|od}}.",
+      "prefix": "mo",
+      "missing": "od",
+      "fullWord": "mood",
+      "explanation": "'in a good mood' is an English idiom meaning feeling cheerful, happy, and optimistic."
+    },
+    {
+      "id": "fitb-s2",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "The local festival is a great opportunity to {{cele|brate}} community traditions.",
+      "prefix": "cele",
+      "missing": "brate",
+      "fullWord": "celebrate",
+      "explanation": "'celebrate' means to acknowledge a significant day or event with a social gathering."
+    },
+    {
+      "id": "fitb-s3",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "She decided to {{pur|sue}} a career in biomedical engineering.",
+      "prefix": "pur",
+      "missing": "sue",
+      "fullWord": "pursue",
+      "explanation": "'pursue' means to follow or try to achieve something over a period of time."
+    },
+    {
+      "id": "fitb-s4",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "The severe winter weather caused a long {{de|lay}} in train service.",
+      "prefix": "de",
+      "missing": "lay",
+      "fullWord": "delay",
+      "explanation": "'delay' refers to a period of time by which something is late or postponed."
+    },
+    {
+      "id": "fitb-s5",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "Eating balanced meals and exercising can {{re|duce}} feelings of fatigue.",
+      "prefix": "re",
+      "missing": "duce",
+      "fullWord": "reduce",
+      "explanation": "'reduce' means to make smaller or less in amount, degree, or size."
+    },
+    {
+      "id": "fitb-s6",
+      "prompt": "Complete the sentence with the correct word",
+      "timeLimitSeconds": 20,
+      "sentence": "He showed tremendous {{cour|age}} by speaking honestly about his struggles.",
+      "prefix": "cour",
+      "missing": "age",
+      "fullWord": "courage",
+      "explanation": "'courage' is the ability to do something that frightens one; bravery."
+    }
+  ]
+}

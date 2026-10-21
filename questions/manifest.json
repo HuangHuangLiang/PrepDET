@@ -3,7 +3,7 @@
     {
       "id": "firefighters-screenshot",
       "title": "Firefighters: Complete Interactive Reading Set",
-      "description": "Authentic Duolingo English Test set matching all reference screenshots: Part 1 cloze (9 blanks), Part 2 connecting sentence, and Part 3 (2 highlights, main idea, best title).",
+      "description": "Authentic Duolingo English Test set matching reference screenshots: Part 1 cloze (9 blanks), Part 2 connecting sentence, and Part 3 (2 highlights, main idea, best title).",
       "section": "interactive-reading",
       "difficulty": "B2 • Intermediate",
       "questionCount": 6,
@@ -29,6 +29,56 @@
       "questionCount": 6,
       "timeLimitSeconds": 480,
       "file": "questions/science-technology-pack.json"
+    },
+    {
+      "id": "fitb-power-of-determination",
+      "title": "The Power of Determination (Passage C-Test)",
+      "description": "Complete the missing half of words in this passage about grit and persistence (matched to Fill in blank long screenshot).",
+      "section": "fill-in-the-blank",
+      "difficulty": "B2 • Upper-Intermediate",
+      "questionCount": 15,
+      "timeLimitSeconds": 180,
+      "file": "questions/fitb-power-of-determination.json"
+    },
+    {
+      "id": "fitb-daily-expressions",
+      "title": "Daily Expressions & Collocations (Sentence Set)",
+      "description": "Complete each sentence with the correct missing word (matched to Fill in the blank screenshot).",
+      "section": "fill-in-the-blank",
+      "difficulty": "B1 • Intermediate",
+      "questionCount": 6,
+      "timeLimitSeconds": 120,
+      "file": "questions/fitb-daily-expressions.json"
+    },
+    {
+      "id": "fitb-history-of-printing",
+      "title": "The Printing Revolution (Academic C-Test)",
+      "description": "Scholarly C-Test text exploring how Gutenberg's movable-type press democratized knowledge across Europe.",
+      "section": "fill-in-the-blank",
+      "difficulty": "C1 • Advanced",
+      "questionCount": 14,
+      "timeLimitSeconds": 180,
+      "file": "questions/fitb-history-of-printing.json"
+    },
+    {
+      "id": "read-and-select-b2c1",
+      "title": "Academic Vocabulary: Real vs Pseudo Words",
+      "description": "Evaluate 18 words to determine which are genuine English words and which are invented pseudo-words (matched to Read and Select screenshot).",
+      "section": "read-and-select",
+      "difficulty": "B2–C1 • Upper-Intermediate",
+      "questionCount": 18,
+      "timeLimitSeconds": 90,
+      "file": "questions/read-and-select-b2c1.json"
+    },
+    {
+      "id": "read-and-select-c1c2",
+      "title": "Advanced Scientific & Humanities Lexicon",
+      "description": "High-level CEFR C1/C2 vocabulary distinguishing legitimate scholarly terms from deceptive morphological inventions.",
+      "section": "read-and-select",
+      "difficulty": "C1–C2 • Advanced",
+      "questionCount": 18,
+      "timeLimitSeconds": 90,
+      "file": "questions/read-and-select-c1c2.json"
     }
   ]
 }

@@ -1,0 +1,119 @@
+{
+  "id": "read-and-select-c1c2",
+  "section": "read-and-select",
+  "title": "Advanced Scientific & Humanities Lexicon",
+  "description": "High-level CEFR C1/C2 vocabulary distinguishing legitimate scholarly terms from deceptive morphological inventions.",
+  "difficulty": "C1–C2 • Advanced",
+  "timeLimitSeconds": 90,
+  "timePerWordSeconds": 5,
+  "words": [
+    {
+      "id": "w1",
+      "word": "anachronistic",
+      "isReal": true,
+      "explanation": "'anachronistic' is a real adjective meaning belonging or appropriate to a period other than that in which it exists."
+    },
+    {
+      "id": "w2",
+      "word": "obfuscatory",
+      "isReal": true,
+      "explanation": "'obfuscatory' is a real adjective meaning intended to render obscure, unclear, or unintelligible."
+    },
+    {
+      "id": "w3",
+      "word": "epistemology",
+      "isReal": true,
+      "explanation": "'epistemology' is the philosophical study of the nature, origin, and limits of human knowledge."
+    },
+    {
+      "id": "w4",
+      "word": "perfunctation",
+      "isReal": false,
+      "explanation": "'perfunctation' is an invented pseudo-word; standard English uses 'perfunctoriness'."
+    },
+    {
+      "id": "w5",
+      "word": "vicissitude",
+      "isReal": true,
+      "explanation": "'vicissitude' is a real noun referring to a change of circumstances or fortune, typically one that is unwelcome."
+    },
+    {
+      "id": "w6",
+      "word": "superfinitude",
+      "isReal": false,
+      "explanation": "'superfinitude' is an invented pseudo-philosophical term combining 'super' and 'finitude'."
+    },
+    {
+      "id": "w7",
+      "word": "pusillanimous",
+      "isReal": true,
+      "explanation": "'pusillanimous' is a real adjective meaning showing a lack of courage or determination; timid."
+    },
+    {
+      "id": "w8",
+      "word": "circumspection",
+      "isReal": true,
+      "explanation": "'circumspection' is a real noun meaning the quality of being wary and unwilling to take risks; prudence."
+    },
+    {
+      "id": "w9",
+      "word": "ineffability",
+      "isReal": true,
+      "explanation": "'ineffability' is a real noun meaning the quality of being too great or extreme to be expressed in words."
+    },
+    {
+      "id": "w10",
+      "word": "bellicosement",
+      "isReal": false,
+      "explanation": "'bellicosement' is an invented pseudo-noun; standard English uses 'bellicosity'."
+    },
+    {
+      "id": "w11",
+      "word": "sesquipedalian",
+      "isReal": true,
+      "explanation": "'sesquipedalian' is a real adjective describing words containing many syllables or using long words."
+    },
+    {
+      "id": "w12",
+      "word": "taciturnity",
+      "isReal": true,
+      "explanation": "'taciturnity' is a real noun meaning the state or quality of being reserved or uncommunicative in speech."
+    },
+    {
+      "id": "w13",
+      "word": "quintessial",
+      "isReal": false,
+      "explanation": "'quintessial' is an invalid pseudo-word; the genuine word is 'quintessential'."
+    },
+    {
+      "id": "w14",
+      "word": "idiosyncrasy",
+      "isReal": true,
+      "explanation": "'idiosyncrasy' is a real noun meaning a mode of behavior or way of thought peculiar to an individual."
+    },
+    {
+      "id": "w15",
+      "word": "malleability",
+      "isReal": true,
+      "explanation": "'malleability' is a real noun meaning the ability of a substance to be molded, hammered, or adapted."
+    },
+    {
+      "id": "w16",
+      "word": "inadvisability",
+      "isReal": true,
+      "explanation": "'inadvisability' is a real noun meaning the state of being unwisely chosen or not recommended."
+    },
+    {
+      "id": "w17",
+      "word": "concurrencehood",
+      "isReal": false,
+      "explanation": "'concurrencehood' is an invented pseudo-word; standard English uses 'concurrence'."
+    },
+    {
+      "id": "w18",
+      "word": "propitiousness",
+      "isReal": true,
+      "explanation": "'propitiousness' is a real noun indicating a favorable, auspicious, or advantageous disposition."
+    }
+  ]
+}
