@@ -22,6 +22,13 @@ const SECTION_META = {
     skill: 'reading',
     badge: 'Read & Select',
     description: 'Distinguish real English vocabulary from plausible pseudo-words.'
+  },
+  'listen-and-type': {
+    name: 'Listen and Type',
+    icon: '',
+    skill: 'listening',
+    badge: 'Listen & Type',
+    description: 'Listen to spoken statements with male & female voices and type what you hear.'
   }
 };
 
@@ -106,6 +113,26 @@ const BUILTIN_MANIFEST = {
       "questionCount": 18,
       "timeLimitSeconds": 90,
       "file": "questions/read-and-select-c1c2.json"
+    },
+    {
+      "id": "listen-and-type-b1b2",
+      "title": "Campus Life & Daily Conversations (Listen and Type)",
+      "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+      "section": "listen-and-type",
+      "difficulty": "B1–B2 • Intermediate",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-b1b2.json"
+    },
+    {
+      "id": "listen-and-type-c1c2",
+      "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+      "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+      "section": "listen-and-type",
+      "difficulty": "C1–C2 • Advanced",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-c1c2.json"
     }
   ]
 };
@@ -981,6 +1008,90 @@ const FALLBACK_PACKS = {
         "explanation": "'propitiousness' is a real noun indicating a favorable, auspicious, or advantageous disposition."
       }
     ]
+  },
+  "listen-and-type-b1b2": {
+    "id": "listen-and-type-b1b2",
+    "section": "listen-and-type",
+    "title": "Campus Life & Daily Conversations (Listen and Type)",
+    "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+    "difficulty": "B1–B2 • Intermediate",
+    "timeLimitSeconds": 300,
+    "timePerQuestionSeconds": 60,
+    "prompt": "Type what you hear",
+    "questions": [
+      {
+        "id": "lt-b1-1",
+        "voice": "female",
+        "text": "The library will be open late during the week of final exams.",
+        "explanation": "Key phrases: 'will be open late' and 'during the week of final exams'."
+      },
+      {
+        "id": "lt-b1-2",
+        "voice": "male",
+        "text": "Please remember to bring your student ID card to the campus center tomorrow.",
+        "explanation": "Imperative instruction featuring 'remember to bring' and 'student ID card'."
+      },
+      {
+        "id": "lt-b1-3",
+        "voice": "female",
+        "text": "She completed her undergraduate degree in psychology before moving to New York.",
+        "explanation": "Past tense sentence with academic term 'undergraduate degree'."
+      },
+      {
+        "id": "lt-b1-4",
+        "voice": "male",
+        "text": "You can submit your assignment online through the student portal before midnight.",
+        "explanation": "Notice the modal verb phrase 'can submit' and prepositional phrase 'through the student portal'."
+      },
+      {
+        "id": "lt-b1-5",
+        "voice": "female",
+        "text": "Many students find it helpful to form study groups before midterm presentations.",
+        "explanation": "Syntactic structure: 'find it helpful to form study groups'."
+      }
+    ]
+  },
+  "listen-and-type-c1c2": {
+    "id": "listen-and-type-c1c2",
+    "section": "listen-and-type",
+    "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+    "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+    "difficulty": "C1–C2 • Advanced",
+    "timeLimitSeconds": 300,
+    "timePerQuestionSeconds": 60,
+    "prompt": "Type what you hear",
+    "questions": [
+      {
+        "id": "lt-c1-1",
+        "voice": "male",
+        "text": "Recent archaeological findings provide compelling evidence that human migration occurred much earlier than previously assumed.",
+        "explanation": "Advanced phraseology: 'compelling evidence', 'human migration', and adverbial modifier 'previously assumed'."
+      },
+      {
+        "id": "lt-c1-2",
+        "voice": "female",
+        "text": "The researchers observed significant discrepancies between the theoretical models and the empirical observations.",
+        "explanation": "Key terms: 'significant discrepancies', 'theoretical models', and 'empirical observations'."
+      },
+      {
+        "id": "lt-c1-3",
+        "voice": "male",
+        "text": "Renewable energy infrastructure requires substantial financial investment alongside sustained political commitment.",
+        "explanation": "Advanced academic collocation: 'substantial financial investment alongside sustained political commitment'."
+      },
+      {
+        "id": "lt-c1-4",
+        "voice": "female",
+        "text": "Cognitive psychology demonstrates that working memory capacity is closely correlated with problem-solving proficiency.",
+        "explanation": "Passive technical collocation: 'is closely correlated with problem-solving proficiency'."
+      },
+      {
+        "id": "lt-c1-5",
+        "voice": "male",
+        "text": "Economic globalization has fundamentally transformed international supply chains and modern market dynamics.",
+        "explanation": "Complex lecture statement: 'fundamentally transformed international supply chains'."
+      }
+    ]
   }
 };
 
@@ -993,6 +1104,55 @@ function generateLlmPrompt(section = 'interactive-reading', difficulty = 'B2', s
   };
 
   const diffDesc = difficultyGuides[difficulty] || difficultyGuides['B2'];
+
+  if (section === 'listen-and-type') {
+    return [
+      'You are an expert test-prep content creator for the Duolingo English Test (DET) "Listen and Type" (Listening) section.',
+      '',
+      'Generate a complete "Listen and Type" practice set of 5 questions in valid JSON following the specification below. Output ONLY valid JSON (no surrounding markdown comments outside the code fence).',
+      '',
+      '### Target Level',
+      '- ' + diffDesc,
+      '',
+      '### Section Structure & Rules',
+      '- **Header Requirement**: The root JSON object MUST have "section": "listen-and-type" to ensure DuoPrep loads it into the correct practice interface.',
+      '- **Question Count**: Exactly 5 questions (standard DET set size).',
+      '- **Voice Allocation**: Include both a male voice and a female voice. Alternate voices across questions (e.g. Q1: female, Q2: male, Q3: female, Q4: male, Q5: female).',
+      '- **Sentence Length & Complexity**: Natural spoken English sentences corresponding to CEFR ' + difficulty + ' level.',
+      '  - B1: 8–12 words, everyday campus/social scenarios.',
+      '  - B2: 12–16 words, semi-academic and practical scenarios.',
+      '  - C1: 15–20 words, academic lectures and scientific research.',
+      '  - C2: 18–25 words, dense scholarly and professional discourse.',
+      '- **Pacing & Timing**: 60 seconds per question (300 seconds total).',
+      '- **Replays Rule**: Each question has 1 initial auto-play and up to 2 replays.',
+      '',
+      '### Required JSON Schema',
+      '{',
+      '  "id": "listen-and-type-custom",',
+      '  "section": "listen-and-type",',
+      '  "title": "' + difficulty + ' Spoken Statements (Listen and Type)",',
+      '  "description": "Listen to spoken English statements by alternating male and female speakers and transcribe what you hear.",',
+      '  "difficulty": "' + difficulty + ' • Practice Set",',
+      '  "timeLimitSeconds": 300,',
+      '  "timePerQuestionSeconds": 60,',
+      '  "prompt": "Type what you hear",',
+      '  "questions": [',
+      '    {',
+      '      "id": "lt-1",',
+      '      "voice": "female",',
+      '      "text": "The university library is open twenty-four hours during final exams.",',
+      '      "explanation": "Key vocabulary: \'university library\', \'twenty-four hours\', and \'final exams\'."',
+      '    },',
+      '    {',
+      '      "id": "lt-2",',
+      '      "voice": "male",',
+      '      "text": "Please submit your laboratory report through the student portal by Friday.",',
+      '      "explanation": "Imperative sentence featuring academic phrase \'laboratory report\'."',
+      '    }',
+      '  ]',
+      '}'
+    ].join('\n');
+  }
 
   if (section === 'read-and-select') {
     return [
@@ -1231,6 +1391,107 @@ function generateLlmPrompt(section = 'interactive-reading', difficulty = 'B2', s
 const LLM_PROMPT_TEMPLATE = generateLlmPrompt('interactive-reading', 'B2');
 
 
+/* ==========================================================================
+   TEXT-TO-SPEECH (TTS) MANAGER FOR LISTENING PRACTICE
+   - Uses Web Speech API (window.speechSynthesis) with zero external dependencies
+   - Discovers distinct male and female voices across macOS, Windows, iOS & Android
+   - Fallback pitch calibration guarantees audibly distinct male/female timbres
+   ========================================================================== */
+const TTSManager = {
+  synth: typeof window !== 'undefined' ? window.speechSynthesis : null,
+  voices: [],
+  femaleVoice: null,
+  maleVoice: null,
+  isInitialized: false,
+
+  init() {
+    if (!this.synth) return;
+    this.loadVoices();
+    if (typeof this.synth.onvoiceschanged !== 'undefined') {
+      this.synth.onvoiceschanged = () => this.loadVoices();
+    }
+  },
+
+  loadVoices() {
+    if (!this.synth) return;
+    const allVoices = this.synth.getVoices() || [];
+    if (!allVoices.length) return;
+    this.voices = allVoices;
+
+    // Filter English voices
+    const enVoices = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+    const candidateVoices = enVoices.length ? enVoices : allVoices;
+
+    const femaleRegex = /samantha|victoria|karen|zira|jenny|moira|fiona|tessa|veena|allison|susan|catherine|zoe|stephanie|ava|serena|female/i;
+    const maleRegex = /alex|daniel|fred|eddy|reed|david|george|arthur|oliver|tom|guy|brian|male/i;
+
+    // Try finding specific female voice
+    this.femaleVoice = candidateVoices.find(v => femaleRegex.test(v.name)) ||
+      candidateVoices.find(v => !maleRegex.test(v.name)) ||
+      candidateVoices[0];
+
+    // Try finding specific male voice (must be distinct from femaleVoice if possible)
+    this.maleVoice = candidateVoices.find(v => maleRegex.test(v.name) && v.name !== this.femaleVoice?.name) ||
+      candidateVoices.find(v => v.name !== this.femaleVoice?.name) ||
+      candidateVoices[0];
+
+    this.isInitialized = true;
+  },
+
+  speak(text, gender = 'female', onStart, onEnd) {
+    if (!this.synth) {
+      console.warn('SpeechSynthesis is not supported on this browser.');
+      if (onStart) onStart();
+      if (onEnd) setTimeout(onEnd, 1500);
+      return;
+    }
+
+    this.stop();
+
+    if (!this.isInitialized || !this.voices.length) {
+      this.loadVoices();
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const isMale = String(gender).toLowerCase() === 'male';
+
+    if (isMale) {
+      if (this.maleVoice) utterance.voice = this.maleVoice;
+      utterance.pitch = 0.88; // Lower pitch for realistic male timbre
+      utterance.rate = 0.94;  // Authentic testing speed
+    } else {
+      if (this.femaleVoice) utterance.voice = this.femaleVoice;
+      utterance.pitch = 1.15; // Natural clear female pitch
+      utterance.rate = 0.94;
+    }
+
+    utterance.onstart = () => {
+      state.isSpeaking = true;
+      if (typeof onStart === 'function') onStart();
+    };
+
+    utterance.onend = () => {
+      state.isSpeaking = false;
+      if (typeof onEnd === 'function') onEnd();
+    };
+
+    utterance.onerror = (err) => {
+      console.warn('SpeechSynthesis error:', err);
+      state.isSpeaking = false;
+      if (typeof onEnd === 'function') onEnd();
+    };
+
+    this.synth.speak(utterance);
+  },
+
+  stop() {
+    if (this.synth) {
+      this.synth.cancel();
+      state.isSpeaking = false;
+    }
+  }
+};
+
 const STORAGE_KEY_CUSTOM_PACKS = 'det_prep_custom_packs_v2';
 
 const state = {
@@ -1259,6 +1520,11 @@ const state = {
   remainingSeconds: 458,
   timerInterval: null,
   showFinalResults: false,
+
+  // Listening practice state
+  replaysLeft: 2,
+  hasPlayedAtStart: false,
+  isSpeaking: false,
 };
 
 /* ==========================================================================
@@ -1339,6 +1605,8 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
     section = 'fill-in-the-blank';
   } else if (section === 'vocabulary' || section === 'real-words') {
     section = 'read-and-select';
+  } else if (section === 'listening' || section === 'listen-and-type') {
+    section = 'listen-and-type';
   }
 
   if (!section) {
@@ -1346,6 +1614,8 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
       section = 'read-and-select';
     } else if (data.text?.includes('{{') || (data.questions && (data.questions[0]?.prefix || data.questions[0]?.missing))) {
       section = 'fill-in-the-blank';
+    } else if (data.questions && (data.questions[0]?.voice || data.questions[0]?.audioText)) {
+      section = 'listen-and-type';
     } else {
       section = 'interactive-reading';
     }
@@ -1356,7 +1626,38 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
   const difficulty = String(data.difficulty || 'B2 • Intermediate');
   const description = String(data.description || '');
 
-  // 1. SECTION: Read and Select
+  // 1. SECTION: Listen and Type
+  if (section === 'listen-and-type') {
+    let rawQuestions = data.questions || [];
+    if (!Array.isArray(rawQuestions)) rawQuestions = [];
+
+    const questions = rawQuestions.map((q, idx) => {
+      const text = String(q.text || q.sentence || q.audioText || '').trim();
+      const voice = String(q.voice || (idx % 2 === 0 ? 'female' : 'male')).toLowerCase();
+      return {
+        id: String(q.id || `lt-q${idx + 1}`),
+        prompt: q.prompt || 'Type what you hear',
+        text,
+        voice,
+        explanation: String(q.explanation || ''),
+        timeLimitSeconds: Number(q.timeLimitSeconds || 60),
+      };
+    });
+
+    return {
+      id: packId,
+      section: 'listen-and-type',
+      title,
+      description,
+      difficulty,
+      timeLimitSeconds: Number(data.timeLimitSeconds || (questions.length * 60)),
+      timePerQuestionSeconds: 60,
+      prompt: data.prompt || 'Type what you hear',
+      questions,
+    };
+  }
+
+  // 2. SECTION: Read and Select
   if (section === 'read-and-select') {
     let rawWords = data.words || data.questions || [];
     if (!Array.isArray(rawWords)) rawWords = [];
@@ -1591,6 +1892,7 @@ function normalizeQuestionPack(rawInput, fallbackTitle = 'Custom Practice Pack')
    INITIALIZATION
    ========================================================================== */
 async function initApp() {
+  TTSManager.init();
   loadCustomPacksFromStorage();
   bindGlobalEvents();
   renderHub();
@@ -1769,12 +2071,13 @@ function renderPacksGrid() {
 
   if (headingEl) {
     const titles = {
-      all: 'All Reading Practice Question Sets',
+      all: 'All Practice Question Sets',
       'interactive-reading': 'Interactive Reading Sets',
       'fill-in-the-blank': 'Fill in the Blank (C-Test) Sets',
       'read-and-select': 'Read and Select Sets',
+      'listen-and-type': 'Listen and Type Practice Sets',
     };
-    headingEl.textContent = titles[state.selectedSectionFilter] || 'Reading Practice Question Sets';
+    headingEl.textContent = titles[state.selectedSectionFilter] || 'Practice Question Sets';
   }
 
   if (subheadingEl) {
@@ -1835,6 +2138,7 @@ function renderPacksGrid() {
    PRACTICE SESSION CONTROLLER
    ========================================================================== */
 async function startPracticeSession(packId) {
+  TTSManager.stop();
   const pack = await ensurePackLoaded(packId);
   shufflePackOptions(pack);
   state.activePackId = pack.id;
@@ -1845,7 +2149,11 @@ async function startPracticeSession(packId) {
   state.feedbackState = null;
   state.showTryAgainColors = false;
   state.showFinalResults = false;
-  state.remainingSeconds = pack.timeLimitSeconds || 300;
+  state.replaysLeft = 2;
+  state.hasPlayedAtStart = false;
+  state.remainingSeconds = pack.section === 'listen-and-type'
+    ? (pack.timePerQuestionSeconds || 60)
+    : (pack.timeLimitSeconds || 300);
 
   hideFinalResultsOverlay();
 
@@ -1883,6 +2191,7 @@ function switchView(targetView) {
       practiceEl.removeAttribute('hidden');
     }
   } else {
+    TTSManager.stop();
     stopTimer();
     hideFinalResultsOverlay();
     state.showFinalResults = false;
@@ -1914,8 +2223,16 @@ function startTimer() {
       state.remainingSeconds -= 1;
       updateTimerDisplay();
     } else {
-      stopTimer();
-      showFinalResultsScreen();
+      if (state.activePack?.section === 'listen-and-type') {
+        if (!state.isGradedCurrentQuestion) {
+          gradeCurrentQuestion();
+        } else {
+          advanceToNextQuestion();
+        }
+      } else {
+        stopTimer();
+        showFinalResultsScreen();
+      }
     }
   }, 1000);
 }
@@ -1939,7 +2256,9 @@ function updateTimerDisplay() {
 
   if (subEl) {
     const pack = state.activePack;
-    if (pack?.section === 'read-and-select') {
+    if (pack?.section === 'listen-and-type') {
+      subEl.textContent = 'for this question';
+    } else if (pack?.section === 'read-and-select') {
       subEl.textContent = 'for this question';
     } else if (pack?.section === 'fill-in-the-blank' && pack.format === 'sentences') {
       subEl.textContent = 'for this question';
@@ -1969,13 +2288,29 @@ function renderPracticeCard() {
   const stageInteractive = document.getElementById('det-interactive-reading-stage');
   const stageReadSelect = document.getElementById('det-read-select-stage');
   const stageFitb = document.getElementById('det-fitb-stage');
+  const stageListening = document.getElementById('det-listening-stage');
   const partIndicator = document.getElementById('det-part-indicator');
   const submitBtn = document.getElementById('det-submit-btn');
   const feedbackDrawer = document.getElementById('det-feedback-drawer');
   const bottombar = document.getElementById('det-bottombar');
 
   // Route to the appropriate section interface
-  if (pack.section === 'read-and-select') {
+  if (pack.section === 'listen-and-type') {
+    if (stageInteractive) stageInteractive.style.display = 'none';
+    if (stageFitb) stageFitb.style.display = 'none';
+    if (stageReadSelect) stageReadSelect.style.display = 'none';
+    if (stageListening) {
+      stageListening.style.display = 'flex';
+      stageListening.hidden = false;
+    }
+    const questions = pack.questions || [];
+    const q = questions[state.currentQuestionIndex];
+    if (partIndicator) {
+      partIndicator.textContent = `Question ${state.currentQuestionIndex + 1} of ${questions.length}`;
+    }
+    renderListeningStage(q, pack);
+  } else if (pack.section === 'read-and-select') {
+    if (stageListening) stageListening.style.display = 'none';
     if (stageInteractive) stageInteractive.style.display = 'none';
     if (stageFitb) stageFitb.style.display = 'none';
     if (stageReadSelect) {
@@ -1991,6 +2326,7 @@ function renderPracticeCard() {
   } else if (pack.section === 'fill-in-the-blank') {
     if (stageInteractive) stageInteractive.style.display = 'none';
     if (stageReadSelect) stageReadSelect.style.display = 'none';
+    if (stageListening) stageListening.style.display = 'none';
     if (stageFitb) {
       stageFitb.style.display = 'flex';
       stageFitb.hidden = false;
@@ -2011,6 +2347,7 @@ function renderPracticeCard() {
     // Interactive Reading
     if (stageReadSelect) stageReadSelect.style.display = 'none';
     if (stageFitb) stageFitb.style.display = 'none';
+    if (stageListening) stageListening.style.display = 'none';
     if (stageInteractive) {
       stageInteractive.style.display = 'grid';
       stageInteractive.hidden = false;
@@ -2043,7 +2380,40 @@ function checkIfCurrentQuestionAnswered(pack) {
   if (!pack) return false;
   const idx = state.currentQuestionIndex;
 
-  if (pack.section === 'read-and-select') {
+  if (pack.section === 'listen-and-type') {
+    const q = (pack.questions || [])[idx];
+    if (!q) return false;
+    const userText = (state.answers[q.id] || '').trim();
+    return userText.length > 0;
+  }
+
+  TTSManager.stop();
+  if (pack.section === 'listen-and-type') {
+    const questions = pack.questions || [];
+    totalQuestions = questions.length;
+    breakdownHtml = questions.map((q, idx) => {
+      const userText = state.answers[q.id] || '';
+      const evalResult = evaluateTranscription(userText, q.text);
+      if (evalResult.isCorrect) correctQuestions += 1;
+      return `
+        <div class="breakdown-item">
+          <div class="breakdown-item-top">
+            <strong>Question ${idx + 1} (${q.voice === 'male' ? 'Male Voice' : 'Female Voice'})</strong>
+            <span style="font-weight: 800; color: ${evalResult.isCorrect ? 'var(--duo-green-text)' : 'var(--duo-red-text)'};">
+              ${evalResult.isCorrect ? '✓ Correct' : '✕ Incorrect'}
+            </span>
+          </div>
+          <div style="font-size: 13.5px; margin-bottom: 4px;">
+            <strong>Target:</strong> "${escapeHtml(q.text)}"
+          </div>
+          <div style="font-size: 13.5px; color: var(--det-text-secondary); margin-bottom: 4px;">
+            <strong>Your transcription:</strong> "${escapeHtml(userText || '(No response)')}"
+          </div>
+          ${q.explanation ? `<div style="font-size: 13px; color: #555555; background: #fafafa; padding: 8px 12px; border-radius: 8px; margin-top: 6px;"><strong style="color: #333;">Explanation:</strong> ${escapeHtml(q.explanation)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  } else if (pack.section === 'read-and-select') {
     const word = (pack.words || [])[idx];
     return Boolean(word && state.answers[word.id]);
   }
@@ -2064,6 +2434,155 @@ function checkIfCurrentQuestionAnswered(pack) {
     return q.blanks.every((b) => Boolean(qAns[b.id]));
   }
   return Boolean(state.answers[q.id]);
+}
+
+/* ==========================================================================
+   SECTION: LISTEN AND TYPE (MATCHED TO DET Listening.png)
+   ========================================================================== */
+function renderListeningStage(q, pack) {
+  if (!q) return;
+
+  const promptEl = document.getElementById('det-listening-prompt');
+  const playBtn = document.getElementById('det-audio-play-btn');
+  const replaysBadge = document.getElementById('det-replays-badge');
+  const voiceIndicator = document.getElementById('det-voice-indicator');
+  const textarea = document.getElementById('det-listening-textarea');
+  const submitBtn = document.getElementById('det-submit-btn');
+
+  if (promptEl) {
+    promptEl.textContent = q.prompt || 'Type what you hear';
+  }
+
+  if (voiceIndicator) {
+    const isMale = String(q.voice).toLowerCase() === 'male';
+    voiceIndicator.textContent = `Speaker: ${isMale ? 'Male Voice' : 'Female Voice'}`;
+  }
+
+  if (replaysBadge) {
+    replaysBadge.textContent = `REPLAYS LEFT: ${state.replaysLeft}`;
+    replaysBadge.classList.toggle('exhausted', state.replaysLeft === 0);
+  }
+
+  if (playBtn) {
+    playBtn.classList.toggle('replays-exhausted', state.replaysLeft === 0);
+    playBtn.disabled = state.replaysLeft === 0 && !state.isSpeaking;
+  }
+
+  if (textarea) {
+    textarea.value = state.answers[q.id] || '';
+    textarea.disabled = state.isGradedCurrentQuestion;
+    if (!state.isGradedCurrentQuestion) {
+      setTimeout(() => textarea.focus(), 80);
+    }
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = !(state.answers[q.id] || '').trim().length;
+  }
+
+  // 1 initial auto-play at start of question (does not consume replays)
+  if (!state.hasPlayedAtStart && !state.isGradedCurrentQuestion) {
+    state.hasPlayedAtStart = true;
+    playListeningAudio(q, false);
+  }
+}
+
+function playListeningAudio(q, isReplay = false) {
+  if (!q) return;
+
+  if (isReplay) {
+    if (state.replaysLeft <= 0) return;
+    state.replaysLeft -= 1;
+    const replaysBadge = document.getElementById('det-replays-badge');
+    const playBtn = document.getElementById('det-audio-play-btn');
+    if (replaysBadge) {
+      replaysBadge.textContent = `REPLAYS LEFT: ${state.replaysLeft}`;
+      if (state.replaysLeft === 0) replaysBadge.classList.add('exhausted');
+    }
+    if (playBtn && state.replaysLeft === 0) {
+      playBtn.classList.add('replays-exhausted');
+    }
+  }
+
+  const playBtn = document.getElementById('det-audio-play-btn');
+
+  TTSManager.speak(
+    q.text,
+    q.voice,
+    () => {
+      if (playBtn) playBtn.classList.add('is-playing');
+    },
+    () => {
+      if (playBtn) {
+        playBtn.classList.remove('is-playing');
+        if (state.replaysLeft === 0) {
+          playBtn.disabled = true;
+        }
+      }
+    }
+  );
+}
+
+function evaluateTranscription(userText, targetText) {
+  const clean = (str) =>
+    (str || '')
+      .toLowerCase()
+      .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"'’]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const userClean = clean(userText);
+  const targetClean = clean(targetText);
+
+  if (userClean === targetClean) {
+    return {
+      isCorrect: true,
+      isPartiallyCorrect: false,
+      accuracy: 1,
+      diffTokens: (targetText || '').trim().split(/\s+/).map((word) => ({ word, status: 'correct' })),
+    };
+  }
+
+  const userTokens = userClean.split(' ').filter(Boolean);
+  const targetTokens = targetClean.split(' ').filter(Boolean);
+
+  let matchCount = 0;
+  const originalWords = (targetText || '').trim().split(/\s+/);
+  const diffTokens = originalWords.map((word, idx) => {
+    const stripped = clean(word);
+    const userHasWord = userTokens.includes(stripped) || (userTokens[idx] && isCloseMatch(userTokens[idx], stripped));
+    if (userHasWord) {
+      matchCount += 1;
+      return { word, status: 'correct' };
+    } else {
+      return { word, status: 'wrong' };
+    }
+  });
+
+  const accuracy = targetTokens.length > 0 ? matchCount / targetTokens.length : 0;
+  const isCorrect = accuracy >= 0.95;
+  const isPartiallyCorrect = !isCorrect && accuracy >= 0.50;
+
+  return { isCorrect, isPartiallyCorrect, accuracy, diffTokens };
+}
+
+function isCloseMatch(a, b) {
+  if (a === b) return true;
+  if (Math.abs(a.length - b.length) > 2) return false;
+  let diffs = 0;
+  let i = 0, j = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] !== b[j]) {
+      diffs += 1;
+      if (diffs > 1) return false;
+      if (a.length > b.length) i++;
+      else if (b.length > a.length) j++;
+      else { i++; j++; }
+    } else {
+      i++; j++;
+    }
+  }
+  return true;
 }
 
 /* ==========================================================================
@@ -2561,6 +3080,32 @@ function gradeCurrentQuestion() {
   state.isGradedCurrentQuestion = true;
   state.showTryAgainColors = false;
 
+  // 0. GRADE LISTEN AND TYPE
+  if (pack.section === 'listen-and-type') {
+    const q = (pack.questions || [])[idx];
+    const userText = (state.answers[q.id] || '').trim();
+    const evalResult = evaluateTranscription(userText, q.text);
+
+    const detailsTokens = evalResult.diffTokens.map((tok) => {
+      const cls = tok.status === 'correct' ? 'listening-diff-word-correct' : 'listening-diff-word-wrong';
+      return `<span class="${cls}">${escapeHtml(tok.word)}</span>`;
+    }).join(' ');
+
+    state.feedbackState = {
+      status: evalResult.isCorrect ? 'correct' : evalResult.isPartiallyCorrect ? 'partially-correct' : 'incorrect',
+      title: evalResult.isCorrect ? 'Great job!' : evalResult.isPartiallyCorrect ? 'Partially correct' : 'Incorrect',
+      isPerfect: evalResult.isCorrect,
+      sublabel: evalResult.isCorrect ? '' : 'Expected Transcription:',
+      detailsHtml: `
+        <div class="listening-diff-box">${detailsTokens}</div>
+        <div style="margin-top: 6px; font-size: 13.5px; color: var(--det-text-secondary);">Your response: "${escapeHtml(userText || '(No response)')}"</div>
+        ${q.explanation ? `<div style="font-size: 12.5px; color: #555555; margin-top: 4px;"><strong>Note:</strong> ${escapeHtml(q.explanation)}</div>` : ''}
+      `,
+    };
+    renderPracticeCard();
+    return;
+  }
+
   // 1. GRADE READ AND SELECT
   if (pack.section === 'read-and-select') {
     const words = pack.words || [];
@@ -2753,10 +3298,15 @@ function renderFeedbackDrawer(fb) {
     state.feedbackState = null;
     state.showTryAgainColors = true;
     renderPracticeCard();
+    const textarea = document.getElementById('det-listening-textarea');
+    if (textarea && state.activePack?.section === 'listen-and-type') {
+      textarea.focus();
+    }
   });
 }
 
 function advanceToNextQuestion() {
+  TTSManager.stop();
   const pack = state.activePack;
   state.isGradedCurrentQuestion = false;
   state.feedbackState = null;
@@ -2768,7 +3318,11 @@ function advanceToNextQuestion() {
 
   if (state.currentQuestionIndex < total - 1) {
     state.currentQuestionIndex += 1;
-    if (pack.section === 'interactive-reading') {
+    if (pack.section === 'listen-and-type') {
+      state.replaysLeft = 2;
+      state.hasPlayedAtStart = false;
+      state.remainingSeconds = pack.timePerQuestionSeconds || 60;
+    } else if (pack.section === 'interactive-reading') {
       const nextQ = pack.questions[state.currentQuestionIndex];
       if (nextQ?.type === 'complete_the_sentences' && nextQ.blanks?.length) {
         state.openBlankId = nextQ.blanks[0].id;
@@ -2928,6 +3482,7 @@ function renderFinalResultsOverlay(pack) {
 }
 
 function hideFinalResultsOverlay() {
+  TTSManager.stop();
   state.showFinalResults = false;
   const overlay = document.getElementById('det-final-results');
   if (overlay) {
@@ -2968,6 +3523,40 @@ function bindGlobalEvents() {
   // Submit button
   document.getElementById('det-submit-btn')?.addEventListener('click', () => {
     gradeCurrentQuestion();
+  });
+
+  // Listening Stage Audio Replay Button
+  document.getElementById('det-audio-play-btn')?.addEventListener('click', () => {
+    const pack = state.activePack;
+    if (!pack || pack.section !== 'listen-and-type') return;
+    const q = (pack.questions || [])[state.currentQuestionIndex];
+    if (!q) return;
+    if (state.replaysLeft <= 0) return;
+    playListeningAudio(q, true);
+  });
+
+  // Listening Stage Textarea Input & Enter Key Handling
+  const listeningTextarea = document.getElementById('det-listening-textarea');
+  listeningTextarea?.addEventListener('input', (e) => {
+    const pack = state.activePack;
+    if (!pack || pack.section !== 'listen-and-type') return;
+    const q = (pack.questions || [])[state.currentQuestionIndex];
+    if (!q) return;
+    state.answers[q.id] = e.target.value;
+    const submitBtn = document.getElementById('det-submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = !e.target.value.trim().length;
+    }
+  });
+
+  listeningTextarea?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('det-submit-btn');
+      if (submitBtn && !submitBtn.disabled) {
+        gradeCurrentQuestion();
+      }
+    }
   });
 
   // Keyboard shortcut listeners for Read & Select (Yes/No)
@@ -3141,6 +3730,7 @@ function setupJsonModalInteractions() {
       if (!detectedSec) {
         if (Array.isArray(parsed.words)) detectedSec = 'read-and-select';
         else if (parsed.text?.includes('{{')) detectedSec = 'fill-in-the-blank';
+        else if (parsed.questions && (parsed.questions[0]?.voice || parsed.questions[0]?.audioText)) detectedSec = 'listen-and-type';
         else detectedSec = 'interactive-reading';
       }
       if (banner && badge) {

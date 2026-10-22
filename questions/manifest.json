@@ -79,6 +79,26 @@
       "questionCount": 18,
       "timeLimitSeconds": 90,
       "file": "questions/read-and-select-c1c2.json"
+    },
+    {
+      "id": "listen-and-type-b1b2",
+      "title": "Campus Life & Daily Conversations (Listen and Type)",
+      "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+      "section": "listen-and-type",
+      "difficulty": "B1–B2 • Intermediate",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-b1b2.json"
+    },
+    {
+      "id": "listen-and-type-c1c2",
+      "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+      "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+      "section": "listen-and-type",
+      "difficulty": "C1–C2 • Advanced",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-c1c2.json"
     }
   ]
 }

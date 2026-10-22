@@ -37,10 +37,10 @@
       </header>
 
       <main class="hub-container">
-        <!-- Reading Practice Navigator (Matched to Navigator.tiff style) -->
+        <!-- Skills Practice Navigator (Matched to Navigator.tiff style) -->
         <div class="skills-navigator-card">
           <div class="skills-navigator-top">
-            <h2 class="skills-navigator-title">Reading Practice</h2>
+            <h2 class="skills-navigator-title">Skills Practice</h2>
             <div class="skills-tabs" role="tablist">
               <button type="button" class="skills-tab active" data-section-filter="all" role="tab" aria-selected="true">
                 全部題型
@@ -53,6 +53,9 @@
               </button>
               <button type="button" class="skills-tab" data-section-filter="read-and-select" role="tab" aria-selected="false">
                 Read and Select
+              </button>
+              <button type="button" class="skills-tab" data-section-filter="listen-and-type" role="tab" aria-selected="false">
+                Listen and Type
               </button>
             </div>
           </div>
@@ -226,6 +229,50 @@
           <div id="det-fitb-passage" class="det-fitb-passage"></div>
         </div>
 
+        <!-- ================================================================
+             STAGE 4: Listen and Type (Matched to Listening.png)
+             ================================================================ -->
+        <div id="det-listening-stage" class="det-listening-stage" style="display: none;" hidden>
+          <h2 id="det-listening-prompt" class="det-listening-prompt">
+            Type what you hear
+          </h2>
+
+          <div class="det-listening-center">
+            <button
+              type="button"
+              id="det-audio-play-btn"
+              class="det-audio-play-btn"
+              title="Play audio (Click or press Space)"
+              aria-label="Play audio"
+            >
+              <svg class="speaker-icon" viewBox="0 0 32 32" fill="none">
+                <path d="M14 8L8 13H4C3.44772 13 3 13.4477 3 14V18C3 18.5523 3.44772 19 4 19H8L14 24V8Z" fill="#FFFFFF"/>
+                <path d="M19 11C20.25 12.25 21 14 21 16C21 18 20.25 19.75 19 21" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M23 7C25.5 9.5 27 12.5 27 16C27 19.5 25.5 22.5 23 25" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+            <div id="det-replays-badge" class="det-replays-badge">
+              REPLAYS LEFT: 2
+            </div>
+
+            <div id="det-voice-indicator" class="det-voice-indicator">
+              Voice: Female
+            </div>
+          </div>
+
+          <div class="det-listening-input-wrap">
+            <textarea
+              id="det-listening-textarea"
+              class="det-listening-textarea"
+              placeholder="Your response"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+            ></textarea>
+          </div>
+        </div>
+
         <!-- Bottom Bar -->
         <footer id="det-bottombar" class="det-bottombar">
           <div id="det-bottom-status" class="det-bottom-left"></div>
@@ -323,6 +370,7 @@
                 <button type="button" class="prompt-pill active" data-prompt-section="interactive-reading">Interactive Reading</button>
                 <button type="button" class="prompt-pill" data-prompt-section="fill-in-the-blank">Fill in the Blank</button>
                 <button type="button" class="prompt-pill" data-prompt-section="read-and-select">Read and Select</button>
+                <button type="button" class="prompt-pill" data-prompt-section="listen-and-type">Listen and Type</button>
               </div>
             </div>
 

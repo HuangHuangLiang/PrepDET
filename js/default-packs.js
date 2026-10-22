@@ -22,6 +22,13 @@ export const SECTION_META = {
     skill: 'reading',
     badge: 'Read & Select',
     description: 'Distinguish real English vocabulary from plausible pseudo-words.'
+  },
+  'listen-and-type': {
+    name: 'Listen and Type',
+    icon: '',
+    skill: 'listening',
+    badge: 'Listen & Type',
+    description: 'Listen to spoken statements with male & female voices and type what you hear.'
   }
 };
 
@@ -106,6 +113,26 @@ export const BUILTIN_MANIFEST = {
       "questionCount": 18,
       "timeLimitSeconds": 90,
       "file": "questions/read-and-select-c1c2.json"
+    },
+    {
+      "id": "listen-and-type-b1b2",
+      "title": "Campus Life & Daily Conversations (Listen and Type)",
+      "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+      "section": "listen-and-type",
+      "difficulty": "B1–B2 • Intermediate",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-b1b2.json"
+    },
+    {
+      "id": "listen-and-type-c1c2",
+      "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+      "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+      "section": "listen-and-type",
+      "difficulty": "C1–C2 • Advanced",
+      "questionCount": 5,
+      "timeLimitSeconds": 300,
+      "file": "questions/listen-and-type-c1c2.json"
     }
   ]
 };
@@ -981,6 +1008,90 @@ export const FALLBACK_PACKS = {
         "explanation": "'propitiousness' is a real noun indicating a favorable, auspicious, or advantageous disposition."
       }
     ]
+  },
+  "listen-and-type-b1b2": {
+    "id": "listen-and-type-b1b2",
+    "section": "listen-and-type",
+    "title": "Campus Life & Daily Conversations (Listen and Type)",
+    "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+    "difficulty": "B1–B2 • Intermediate",
+    "timeLimitSeconds": 300,
+    "timePerQuestionSeconds": 60,
+    "prompt": "Type what you hear",
+    "questions": [
+      {
+        "id": "lt-b1-1",
+        "voice": "female",
+        "text": "The library will be open late during the week of final exams.",
+        "explanation": "Key phrases: 'will be open late' and 'during the week of final exams'."
+      },
+      {
+        "id": "lt-b1-2",
+        "voice": "male",
+        "text": "Please remember to bring your student ID card to the campus center tomorrow.",
+        "explanation": "Imperative instruction featuring 'remember to bring' and 'student ID card'."
+      },
+      {
+        "id": "lt-b1-3",
+        "voice": "female",
+        "text": "She completed her undergraduate degree in psychology before moving to New York.",
+        "explanation": "Past tense sentence with academic term 'undergraduate degree'."
+      },
+      {
+        "id": "lt-b1-4",
+        "voice": "male",
+        "text": "You can submit your assignment online through the student portal before midnight.",
+        "explanation": "Notice the modal verb phrase 'can submit' and prepositional phrase 'through the student portal'."
+      },
+      {
+        "id": "lt-b1-5",
+        "voice": "female",
+        "text": "Many students find it helpful to form study groups before midterm presentations.",
+        "explanation": "Syntactic structure: 'find it helpful to form study groups'."
+      }
+    ]
+  },
+  "listen-and-type-c1c2": {
+    "id": "listen-and-type-c1c2",
+    "section": "listen-and-type",
+    "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+    "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+    "difficulty": "C1–C2 • Advanced",
+    "timeLimitSeconds": 300,
+    "timePerQuestionSeconds": 60,
+    "prompt": "Type what you hear",
+    "questions": [
+      {
+        "id": "lt-c1-1",
+        "voice": "male",
+        "text": "Recent archaeological findings provide compelling evidence that human migration occurred much earlier than previously assumed.",
+        "explanation": "Advanced phraseology: 'compelling evidence', 'human migration', and adverbial modifier 'previously assumed'."
+      },
+      {
+        "id": "lt-c1-2",
+        "voice": "female",
+        "text": "The researchers observed significant discrepancies between the theoretical models and the empirical observations.",
+        "explanation": "Key terms: 'significant discrepancies', 'theoretical models', and 'empirical observations'."
+      },
+      {
+        "id": "lt-c1-3",
+        "voice": "male",
+        "text": "Renewable energy infrastructure requires substantial financial investment alongside sustained political commitment.",
+        "explanation": "Advanced academic collocation: 'substantial financial investment alongside sustained political commitment'."
+      },
+      {
+        "id": "lt-c1-4",
+        "voice": "female",
+        "text": "Cognitive psychology demonstrates that working memory capacity is closely correlated with problem-solving proficiency.",
+        "explanation": "Passive technical collocation: 'is closely correlated with problem-solving proficiency'."
+      },
+      {
+        "id": "lt-c1-5",
+        "voice": "male",
+        "text": "Economic globalization has fundamentally transformed international supply chains and modern market dynamics.",
+        "explanation": "Complex lecture statement: 'fundamentally transformed international supply chains'."
+      }
+    ]
   }
 };
 
@@ -993,6 +1104,55 @@ export function generateLlmPrompt(section = 'interactive-reading', difficulty = 
   };
 
   const diffDesc = difficultyGuides[difficulty] || difficultyGuides['B2'];
+
+  if (section === 'listen-and-type') {
+    return [
+      'You are an expert test-prep content creator for the Duolingo English Test (DET) "Listen and Type" (Listening) section.',
+      '',
+      'Generate a complete "Listen and Type" practice set of 5 questions in valid JSON following the specification below. Output ONLY valid JSON (no surrounding markdown comments outside the code fence).',
+      '',
+      '### Target Level',
+      '- ' + diffDesc,
+      '',
+      '### Section Structure & Rules',
+      '- **Header Requirement**: The root JSON object MUST have "section": "listen-and-type" to ensure DuoPrep loads it into the correct practice interface.',
+      '- **Question Count**: Exactly 5 questions (standard DET set size).',
+      '- **Voice Allocation**: Include both a male voice and a female voice. Alternate voices across questions (e.g. Q1: female, Q2: male, Q3: female, Q4: male, Q5: female).',
+      '- **Sentence Length & Complexity**: Natural spoken English sentences corresponding to CEFR ' + difficulty + ' level.',
+      '  - B1: 8–12 words, everyday campus/social scenarios.',
+      '  - B2: 12–16 words, semi-academic and practical scenarios.',
+      '  - C1: 15–20 words, academic lectures and scientific research.',
+      '  - C2: 18–25 words, dense scholarly and professional discourse.',
+      '- **Pacing & Timing**: 60 seconds per question (300 seconds total).',
+      '- **Replays Rule**: Each question has 1 initial auto-play and up to 2 replays.',
+      '',
+      '### Required JSON Schema',
+      '{',
+      '  "id": "listen-and-type-custom",',
+      '  "section": "listen-and-type",',
+      '  "title": "' + difficulty + ' Spoken Statements (Listen and Type)",',
+      '  "description": "Listen to spoken English statements by alternating male and female speakers and transcribe what you hear.",',
+      '  "difficulty": "' + difficulty + ' • Practice Set",',
+      '  "timeLimitSeconds": 300,',
+      '  "timePerQuestionSeconds": 60,',
+      '  "prompt": "Type what you hear",',
+      '  "questions": [',
+      '    {',
+      '      "id": "lt-1",',
+      '      "voice": "female",',
+      '      "text": "The university library is open twenty-four hours during final exams.",',
+      '      "explanation": "Key vocabulary: \'university library\', \'twenty-four hours\', and \'final exams\'."',
+      '    },',
+      '    {',
+      '      "id": "lt-2",',
+      '      "voice": "male",',
+      '      "text": "Please submit your laboratory report through the student portal by Friday.",',
+      '      "explanation": "Imperative sentence featuring academic phrase \'laboratory report\'."',
+      '    }',
+      '  ]',
+      '}'
+    ].join('\n');
+  }
 
   if (section === 'read-and-select') {
     return [

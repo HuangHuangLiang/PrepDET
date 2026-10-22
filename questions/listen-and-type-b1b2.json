@@ -1,0 +1,42 @@
+{
+  "id": "listen-and-type-b1b2",
+  "section": "listen-and-type",
+  "title": "Campus Life & Daily Conversations (Listen and Type)",
+  "description": "Listen to spoken English statements spoken by male and female voices and transcribe what you hear with up to 2 replays.",
+  "difficulty": "B1–B2 • Intermediate",
+  "timeLimitSeconds": 300,
+  "timePerQuestionSeconds": 60,
+  "prompt": "Type what you hear",
+  "questions": [
+    {
+      "id": "lt-b1-1",
+      "voice": "female",
+      "text": "The library will be open late during the week of final exams.",
+      "explanation": "Key phrases: 'will be open late' and 'during the week of final exams'."
+    },
+    {
+      "id": "lt-b1-2",
+      "voice": "male",
+      "text": "Please remember to bring your student ID card to the campus center tomorrow.",
+      "explanation": "Imperative instruction featuring 'remember to bring' and 'student ID card'."
+    },
+    {
+      "id": "lt-b1-3",
+      "voice": "female",
+      "text": "She completed her undergraduate degree in psychology before moving to New York.",
+      "explanation": "Past tense sentence with academic term 'undergraduate degree'."
+    },
+    {
+      "id": "lt-b1-4",
+      "voice": "male",
+      "text": "You can submit your assignment online through the student portal before midnight.",
+      "explanation": "Notice the modal verb phrase 'can submit' and prepositional phrase 'through the student portal'."
+    },
+    {
+      "id": "lt-b1-5",
+      "voice": "female",
+      "text": "Many students find it helpful to form study groups before midterm presentations.",
+      "explanation": "Syntactic structure: 'find it helpful to form study groups'."
+    }
+  ]
+}

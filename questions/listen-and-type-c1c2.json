@@ -1,0 +1,42 @@
+{
+  "id": "listen-and-type-c1c2",
+  "section": "listen-and-type",
+  "title": "Academic Lectures & Scientific Concepts (Listen and Type)",
+  "description": "High-level scholarly statements spoken by alternating male and female voices covering science, history, and economics.",
+  "difficulty": "C1–C2 • Advanced",
+  "timeLimitSeconds": 300,
+  "timePerQuestionSeconds": 60,
+  "prompt": "Type what you hear",
+  "questions": [
+    {
+      "id": "lt-c1-1",
+      "voice": "male",
+      "text": "Recent archaeological findings provide compelling evidence that human migration occurred much earlier than previously assumed.",
+      "explanation": "Advanced phraseology: 'compelling evidence', 'human migration', and adverbial modifier 'previously assumed'."
+    },
+    {
+      "id": "lt-c1-2",
+      "voice": "female",
+      "text": "The researchers observed significant discrepancies between the theoretical models and the empirical observations.",
+      "explanation": "Key terms: 'significant discrepancies', 'theoretical models', and 'empirical observations'."
+    },
+    {
+      "id": "lt-c1-3",
+      "voice": "male",
+      "text": "Renewable energy infrastructure requires substantial financial investment alongside sustained political commitment.",
+      "explanation": "Advanced academic collocation: 'substantial financial investment alongside sustained political commitment'."
+    },
+    {
+      "id": "lt-c1-4",
+      "voice": "female",
+      "text": "Cognitive psychology demonstrates that working memory capacity is closely correlated with problem-solving proficiency.",
+      "explanation": "Passive technical collocation: 'is closely correlated with problem-solving proficiency'."
+    },
+    {
+      "id": "lt-c1-5",
+      "voice": "male",
+      "text": "Economic globalization has fundamentally transformed international supply chains and modern market dynamics.",
+      "explanation": "Complex lecture statement: 'fundamentally transformed international supply chains'."
+    }
+  ]
+}
