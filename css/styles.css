@@ -368,7 +368,7 @@ textarea {
   border-radius: 16px;
   margin-bottom: 28px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .skills-navigator-top {
@@ -377,8 +377,9 @@ textarea {
   justify-content: space-between;
   padding: 0 28px;
   background: #ffffff;
-  overflow-x: auto;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1.5px solid #f0f0f0;
+  border-radius: 16px 16px 0 0;
+  position: relative;
 }
 
 .skills-navigator-title {
@@ -394,7 +395,7 @@ textarea {
 .skills-tabs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
   white-space: nowrap;
 }
 
@@ -411,6 +412,9 @@ textarea {
   position: relative;
   transition: color 0.15s ease;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .skills-tab:hover {
@@ -432,40 +436,242 @@ textarea {
   border-radius: 4px 4px 0 0;
 }
 
-.skills-subfilters {
-  display: flex;
+/* Category Dropdown Styling */
+.skills-dropdown-container {
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 24px;
-  background: #fafafa;
-  border-top: 1px solid #f0f0f0;
-  overflow-x: auto;
 }
 
-.subfilter-btn {
+.skills-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skills-chevron {
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: #999999;
+}
+
+.skills-dropdown-trigger:hover .skills-chevron {
+  color: var(--det-text-main);
+}
+
+.skills-tab.active .skills-chevron {
+  color: var(--duo-blue);
+}
+
+.skills-dropdown-container.open .skills-chevron {
+  transform: rotate(180deg);
+  color: var(--duo-blue);
+}
+
+.skills-tab-badge {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #e6f6fe;
+  color: var(--duo-blue);
+  text-transform: none;
+}
+
+/* Floating Dropdown Card */
+.skills-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 250px;
   background: #ffffff;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 20px;
+  border: 1.5px solid var(--det-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 8px;
+  z-index: 200;
+  animation: dropdownFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-dropdown-container.open .skills-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skills-dropdown-header {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--det-text-secondary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 12px 4px;
+}
+
+.skills-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--det-text-main);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.skills-dropdown-item:hover {
+  background: #f7f7f7;
+  color: var(--duo-blue);
+}
+
+.skills-dropdown-item.active {
+  background: var(--duo-blue-bg);
+  color: var(--duo-blue-dark);
+  font-weight: 800;
+}
+
+.dropdown-item-count {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f0f0f0;
+  color: #777777;
+}
+
+.skills-dropdown-item.active .dropdown-item-count {
+  background: #ffffff;
+  color: var(--duo-blue-dark);
+}
+
+/* Collapsible Sub-Navigation Bar */
+.skills-subnav-row {
+  background: #fafafa;
+  padding: 10px 24px;
+  border-top: 1px solid #f0f0f0;
+  border-radius: 0 0 16px 16px;
+  transition: all 0.2s ease;
+}
+
+.skills-subnav-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.skills-subnav-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.skills-subnav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e5e5;
+  background: #ffffff;
   font-family: var(--font-display);
   font-size: 13px;
   font-weight: 700;
-  color: #666666;
+  color: var(--det-text-secondary);
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
-.subfilter-btn:hover {
-  border-color: #bbbbbb;
-  color: #333333;
+.skills-subnav-pill:hover {
+  border-color: #c7c7c7;
+  color: var(--det-text-main);
 }
 
-.subfilter-btn.active {
-  background: var(--duo-blue);
-  color: #ffffff;
-  border-color: var(--duo-blue-dark);
-  box-shadow: 0 2px 0 var(--duo-blue-dark);
+.skills-subnav-pill.active {
+  background: var(--duo-blue-bg);
+  border-color: var(--duo-blue);
+  color: var(--duo-blue-dark);
+  font-weight: 800;
+}
+
+.subnav-pill-count {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: #f0f0f0;
+  color: #777777;
+}
+
+.skills-subnav-pill.active .subnav-pill-count {
+  background: #ffffff;
+  color: var(--duo-blue-dark);
+}
+
+/* Imported Cards & Tags */
+.pack-card.pack-card-imported {
+  border-color: #e9d5ff;
+  background: linear-gradient(180deg, #faf5ff 0%, #ffffff 48px);
+}
+
+.pack-card.pack-card-imported:hover {
+  border-color: #c084fc;
+}
+
+.pack-badge-imported {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #d8b4fe;
+  box-shadow: 0 1px 2px rgba(126, 34, 206, 0.06);
+}
+
+.btn-remove-imported {
+  background: transparent;
+  border: 1.5px solid #fecaca;
+  color: #dc2626;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.btn-remove-imported:hover {
+  background: #fee2e2;
+  border-color: #f87171;
 }
 
 .skills-placeholder {

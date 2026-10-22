@@ -1496,8 +1496,9 @@ const STORAGE_KEY_CUSTOM_PACKS = 'det_prep_custom_packs_v2';
 
 const state = {
   view: 'hub', // 'hub' | 'practice'
-  selectedSkillTab: 'all', // 'all' | 'speaking' | 'writing' | 'reading' | 'listening'
-  selectedSectionFilter: 'all', // 'all' | 'interactive-reading' | 'fill-in-the-blank' | 'read-and-select'
+  selectedSkillGroup: 'all', // 'all' | 'reading' | 'listening'
+  selectedSkillTab: 'all', // legacy alias
+  selectedSectionFilter: 'all', // 'all' | 'reading-all' | 'listening-all' | 'interactive-reading' | 'fill-in-the-blank' | 'read-and-select' | 'listen-and-type'
   promptConfig: {
     section: 'interactive-reading',
     difficulty: 'B2',
@@ -1930,6 +1931,7 @@ function saveCustomPackToStorage(pack) {
 }
 
 function registerPackInMemory(pack, persist = true) {
+  pack.isImported = true;
   state.loadedPacks[pack.id] = pack;
   const count = pack.section === 'read-and-select'
     ? (pack.words || []).length
@@ -1944,6 +1946,7 @@ function registerPackInMemory(pack, persist = true) {
     questionCount: count,
     timeLimitSeconds: pack.timeLimitSeconds || 300,
     isCustom: true,
+    isImported: true,
   };
 
   const existingIdx = state.packsMeta.findIndex((p) => p.id === pack.id);
@@ -1956,6 +1959,25 @@ function registerPackInMemory(pack, persist = true) {
   if (persist) {
     saveCustomPackToStorage(pack);
   }
+}
+
+function deleteImportedPack(packId) {
+  state.packsMeta = state.packsMeta.filter((p) => p.id !== packId);
+  delete state.loadedPacks[packId];
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_PACKS);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      const filtered = saved.filter((p) => p.id !== packId);
+      localStorage.setItem(STORAGE_KEY_CUSTOM_PACKS, JSON.stringify(filtered));
+    }
+  } catch (err) {
+    console.warn('Could not update custom storage after delete:', err);
+  }
+
+  renderHub();
+  showToast('Removed imported practice set.');
 }
 
 async function fetchManifestIfAvailable() {
@@ -2050,11 +2072,189 @@ function renderHub() {
 }
 
 function renderNavigator() {
-  document.querySelectorAll('.skills-tab').forEach((tab) => {
-    const filter = tab.getAttribute('data-section-filter') || 'all';
-    const isActive = filter === state.selectedSectionFilter;
-    tab.classList.toggle('active', isActive);
-    tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  const currentGroup = state.selectedSkillGroup || 'all';
+  const currentFilter = state.selectedSectionFilter || 'all';
+
+  // 1. All Tab
+  const allTab = document.querySelector('.skills-tab[data-skill-group="all"]');
+  if (allTab) {
+    const isAll = currentGroup === 'all' && currentFilter === 'all';
+    allTab.classList.toggle('active', isAll);
+    allTab.setAttribute('aria-selected', isAll ? 'true' : 'false');
+  }
+
+  // 2. Reading Dropdown Trigger & Items
+  const readingTrigger = document.querySelector('.skills-dropdown-trigger[data-skill-group="reading"]');
+  const isReading = currentGroup === 'reading';
+  if (readingTrigger) {
+    readingTrigger.classList.toggle('active', isReading);
+    readingTrigger.setAttribute('aria-selected', isReading ? 'true' : 'false');
+    const badge = document.getElementById('reading-active-badge');
+    if (badge) {
+      if (isReading && currentFilter !== 'reading-all' && currentFilter !== 'all') {
+        const secInfo = SECTION_META[currentFilter];
+        badge.textContent = secInfo ? secInfo.badge : currentFilter;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  }
+
+  document.querySelectorAll('#dropdown-menu-reading .skills-dropdown-item').forEach((item) => {
+    const f = item.getAttribute('data-section-filter');
+    const isActive = isReading && (f === currentFilter || (f === 'reading-all' && currentFilter === 'all'));
+    item.classList.toggle('active', isActive);
+  });
+
+  // 3. Listening Dropdown Trigger & Items
+  const listeningTrigger = document.querySelector('.skills-dropdown-trigger[data-skill-group="listening"]');
+  const isListening = currentGroup === 'listening';
+  if (listeningTrigger) {
+    listeningTrigger.classList.toggle('active', isListening);
+    listeningTrigger.setAttribute('aria-selected', isListening ? 'true' : 'false');
+    const badge = document.getElementById('listening-active-badge');
+    if (badge) {
+      if (isListening && currentFilter !== 'listening-all' && currentFilter !== 'all') {
+        const secInfo = SECTION_META[currentFilter];
+        badge.textContent = secInfo ? secInfo.badge : currentFilter;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  }
+
+  document.querySelectorAll('#dropdown-menu-listening .skills-dropdown-item').forEach((item) => {
+    const f = item.getAttribute('data-section-filter');
+    const isActive = isListening && (f === currentFilter || (f === 'listening-all' && currentFilter === 'all'));
+    item.classList.toggle('active', isActive);
+  });
+
+  // 4. Update dropdown pack count numbers
+  const readingPacks = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'reading');
+  const listeningPacks = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'listening');
+
+  const setElText = (id, txt) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(txt);
+  };
+
+  setElText('count-reading-all', readingPacks.length);
+  setElText('count-interactive-reading', readingPacks.filter((p) => p.section === 'interactive-reading').length);
+  setElText('count-fill-in-the-blank', readingPacks.filter((p) => p.section === 'fill-in-the-blank').length);
+  setElText('count-read-and-select', readingPacks.filter((p) => p.section === 'read-and-select').length);
+
+  setElText('count-listening-all', listeningPacks.length);
+  setElText('count-listen-and-type', listeningPacks.filter((p) => p.section === 'listen-and-type').length);
+
+  // 5. Render Collapsible Sub-nav Pills
+  renderSubNavPills();
+}
+
+function renderSubNavPills() {
+  const container = document.getElementById('skills-subnav-pills');
+  if (!container) return;
+
+  const currentGroup = state.selectedSkillGroup || 'all';
+  const currentFilter = state.selectedSectionFilter || 'all';
+
+  let pills = [];
+
+  if (currentGroup === 'reading') {
+    const readingPacks = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'reading');
+    pills = [
+      {
+        id: 'reading-all',
+        label: 'All Reading',
+        group: 'reading',
+        count: readingPacks.length,
+      },
+      {
+        id: 'interactive-reading',
+        label: 'Interactive Reading',
+        group: 'reading',
+        count: readingPacks.filter((p) => p.section === 'interactive-reading').length,
+      },
+      {
+        id: 'fill-in-the-blank',
+        label: 'Fill in the Blank',
+        group: 'reading',
+        count: readingPacks.filter((p) => p.section === 'fill-in-the-blank').length,
+      },
+      {
+        id: 'read-and-select',
+        label: 'Read and Select',
+        group: 'reading',
+        count: readingPacks.filter((p) => p.section === 'read-and-select').length,
+      },
+    ];
+  } else if (currentGroup === 'listening') {
+    const listeningPacks = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'listening');
+    pills = [
+      {
+        id: 'listening-all',
+        label: 'All Listening',
+        group: 'listening',
+        count: listeningPacks.length,
+      },
+      {
+        id: 'listen-and-type',
+        label: 'Listen and Type',
+        group: 'listening',
+        count: listeningPacks.filter((p) => p.section === 'listen-and-type').length,
+      },
+    ];
+  } else {
+    // Overview mode
+    const readingCount = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'reading').length;
+    const listeningCount = state.packsMeta.filter((p) => SECTION_META[p.section]?.skill === 'listening').length;
+    pills = [
+      {
+        id: 'all',
+        label: '全部題型 (All Types)',
+        group: 'all',
+        count: state.packsMeta.length,
+      },
+      {
+        id: 'reading-all',
+        label: 'Reading Comprehension',
+        group: 'reading',
+        count: readingCount,
+      },
+      {
+        id: 'listening-all',
+        label: 'Listening Comprehension',
+        group: 'listening',
+        count: listeningCount,
+      },
+    ];
+  }
+
+  container.innerHTML = pills.map((p) => {
+    const isActive = (currentGroup === p.group && (currentFilter === p.id || (p.id === 'reading-all' && currentFilter === 'reading-all') || (p.id === 'listening-all' && currentFilter === 'listening-all'))) ||
+      (currentGroup === 'all' && p.id === 'all');
+    return `
+      <button
+        type="button"
+        class="skills-subnav-pill ${isActive ? 'active' : ''}"
+        data-pill-group="${p.group}"
+        data-pill-filter="${p.id}"
+      >
+        <span>${escapeHtml(p.label)}</span>
+        <span class="subnav-pill-count">${p.count}</span>
+      </button>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.skills-subnav-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const g = pill.getAttribute('data-pill-group');
+      const f = pill.getAttribute('data-pill-filter');
+      state.selectedSkillGroup = g;
+      state.selectedSectionFilter = f;
+      renderHub();
+    });
   });
 }
 
@@ -2065,16 +2265,35 @@ function renderPacksGrid() {
   if (!packsContainer) return;
 
   const filteredPacks = state.packsMeta.filter((meta) => {
+    if (state.selectedSkillGroup === 'reading') {
+      const isReading = SECTION_META[meta.section]?.skill === 'reading';
+      if (!isReading) return false;
+      if (state.selectedSectionFilter === 'reading-all' || state.selectedSectionFilter === 'all') return true;
+      return meta.section === state.selectedSectionFilter;
+    }
+
+    if (state.selectedSkillGroup === 'listening') {
+      const isListening = SECTION_META[meta.section]?.skill === 'listening';
+      if (!isListening) return false;
+      if (state.selectedSectionFilter === 'listening-all' || state.selectedSectionFilter === 'all') return true;
+      return meta.section === state.selectedSectionFilter;
+    }
+
+    // All skills selected
     if (state.selectedSectionFilter === 'all') return true;
+    if (state.selectedSectionFilter === 'reading-all') return SECTION_META[meta.section]?.skill === 'reading';
+    if (state.selectedSectionFilter === 'listening-all') return SECTION_META[meta.section]?.skill === 'listening';
     return meta.section === state.selectedSectionFilter;
   });
 
   if (headingEl) {
     const titles = {
-      all: 'All Practice Question Sets',
+      all: 'All DET Practice Sets',
+      'reading-all': 'All Reading Practice Question Sets',
       'interactive-reading': 'Interactive Reading Sets',
       'fill-in-the-blank': 'Fill in the Blank (C-Test) Sets',
       'read-and-select': 'Read and Select Sets',
+      'listening-all': 'All Listening Practice Question Sets',
       'listen-and-type': 'Listen and Type Practice Sets',
     };
     headingEl.textContent = titles[state.selectedSectionFilter] || 'Practice Question Sets';
@@ -2102,23 +2321,39 @@ function renderPacksGrid() {
       const mins = Math.floor((meta.timeLimitSeconds || 300) / 60);
       const secs = String((meta.timeLimitSeconds || 300) % 60).padStart(2, '0');
       const secInfo = SECTION_META[meta.section] || { icon: '', badge: meta.section };
+      const isImported = Boolean(meta.isCustom || meta.isImported);
 
       return `
-        <article class="pack-card ${isActive ? 'active' : ''}" data-pack-id="${escapeHtml(meta.id)}">
+        <article class="pack-card ${isActive ? 'active' : ''} ${isImported ? 'pack-card-imported' : ''}" data-pack-id="${escapeHtml(meta.id)}">
           <div>
             <div class="pack-card-top">
               <span class="pack-badge-section pack-badge-${escapeHtml(meta.section)}">
                 ${escapeHtml(secInfo.badge)}
               </span>
               <span class="pack-badge">${escapeHtml(meta.difficulty || 'B2 • Intermediate')}</span>
-              ${meta.isCustom ? '<span class="pack-badge" style="background: #eef6ff; color: #1cb0f6;">Custom</span>' : ''}
+              ${isImported ? `
+                <span class="pack-badge-imported" title="Custom Imported Practice Set">
+                  <svg class="imported-icon" width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2V10M8 10L4.5 6.5M8 10L11.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2.5 12.5H13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Imported
+                </span>
+              ` : ''}
             </div>
             <h3 class="pack-title">${escapeHtml(meta.title)}</h3>
             <p class="pack-desc">${escapeHtml(meta.description || '')}</p>
           </div>
           <div class="pack-meta">
             <span>${meta.questionCount || 6} Questions • ${mins}:${secs}</span>
-            <span style="color: var(--duo-blue); font-weight: 800;">Start Practice →</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              ${isImported ? `
+                <button type="button" class="btn-remove-imported" data-delete-pack-id="${escapeHtml(meta.id)}" title="Delete imported practice set">
+                  Delete
+                </button>
+              ` : ''}
+              <span style="color: var(--duo-blue); font-weight: 800;">Start Practice →</span>
+            </div>
           </div>
         </article>
       `;
@@ -2126,10 +2361,21 @@ function renderPacksGrid() {
     .join('');
 
   packsContainer.querySelectorAll('.pack-card').forEach((card) => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-remove-imported')) return;
       const packId = card.getAttribute('data-pack-id');
       state.activePackId = packId;
       startPracticeSession(packId);
+    });
+  });
+
+  packsContainer.querySelectorAll('.btn-remove-imported').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const packId = btn.getAttribute('data-delete-pack-id');
+      if (confirm('Are you sure you want to delete this imported practice set?')) {
+        deleteImportedPack(packId);
+      }
     });
   });
 }
@@ -3496,18 +3742,94 @@ function hideFinalResultsOverlay() {
    EVENT HANDLERS & MODAL BINDINGS
    ========================================================================== */
 function bindGlobalEvents() {
-  // Navigator Reading Section Tabs
-  document.querySelectorAll('.skills-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const filter = tab.getAttribute('data-section-filter') || 'all';
+  // Navigator Category Dropdowns & All Tab
+  const allTabBtn = document.querySelector('.skills-tab[data-skill-group="all"]');
+  allTabBtn?.addEventListener('click', () => {
+    state.selectedSkillGroup = 'all';
+    state.selectedSectionFilter = 'all';
+    document.querySelectorAll('.skills-dropdown-container.open').forEach((c) => {
+      c.classList.remove('open');
+      c.querySelector('.skills-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+    });
+    renderHub();
+  });
+
+  document.querySelectorAll('.skills-dropdown-trigger').forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const container = trigger.closest('.skills-dropdown-container');
+      const isOpen = container?.classList.contains('open');
+
+      document.querySelectorAll('.skills-dropdown-container.open').forEach((c) => {
+        if (c !== container) {
+          c.classList.remove('open');
+          c.querySelector('.skills-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      container?.classList.toggle('open', !isOpen);
+      trigger.setAttribute('aria-expanded', String(!isOpen));
+
+      const group = trigger.getAttribute('data-skill-group');
+      if (group && state.selectedSkillGroup !== group) {
+        state.selectedSkillGroup = group;
+        state.selectedSectionFilter = group === 'reading' ? 'reading-all' : 'listening-all';
+        renderHub();
+      }
+    });
+  });
+
+  document.querySelectorAll('.skills-dropdown-item').forEach((item) => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const group = item.getAttribute('data-skill-group');
+      const filter = item.getAttribute('data-section-filter');
+      state.selectedSkillGroup = group;
       state.selectedSectionFilter = filter;
+
+      const container = item.closest('.skills-dropdown-container');
+      container?.classList.remove('open');
+      container?.querySelector('.skills-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+
       renderHub();
     });
+  });
+
+  // Close dropdowns on click outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.skills-dropdown-container')) {
+      document.querySelectorAll('.skills-dropdown-container.open').forEach((c) => {
+        c.classList.remove('open');
+        c.querySelector('.skills-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  // Close dropdowns on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.skills-dropdown-container.open').forEach((c) => {
+        c.classList.remove('open');
+        c.querySelector('.skills-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+      });
+    }
   });
 
   // Start first pack button in hub
   document.getElementById('btn-header-start-first')?.addEventListener('click', () => {
     const available = state.packsMeta.filter((p) => {
+      if (state.selectedSkillGroup === 'reading') {
+        const isReading = SECTION_META[p.section]?.skill === 'reading';
+        if (!isReading) return false;
+        if (state.selectedSectionFilter === 'reading-all' || state.selectedSectionFilter === 'all') return true;
+        return p.section === state.selectedSectionFilter;
+      }
+      if (state.selectedSkillGroup === 'listening') {
+        const isListening = SECTION_META[p.section]?.skill === 'listening';
+        if (!isListening) return false;
+        if (state.selectedSectionFilter === 'listening-all' || state.selectedSectionFilter === 'all') return true;
+        return p.section === state.selectedSectionFilter;
+      }
       if (state.selectedSectionFilter === 'all') return true;
       return p.section === state.selectedSectionFilter;
     });
@@ -3752,6 +4074,7 @@ function setupJsonModalInteractions() {
       const pack = normalizeQuestionPack(rawText);
       registerPackInMemory(pack, true);
       state.activePackId = pack.id;
+      state.selectedSkillGroup = SECTION_META[pack.section]?.skill || 'all';
       state.selectedSectionFilter = pack.section;
       closeModal('json-modal');
       renderHub();
@@ -3774,6 +4097,7 @@ function readUploadedJsonFile(file) {
       const pack = normalizeQuestionPack(content, fallbackName);
       registerPackInMemory(pack, true);
       state.activePackId = pack.id;
+      state.selectedSkillGroup = SECTION_META[pack.section]?.skill || 'all';
       state.selectedSectionFilter = pack.section;
       closeModal('json-modal');
       renderHub();

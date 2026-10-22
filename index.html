@@ -37,26 +37,101 @@
       </header>
 
       <main class="hub-container">
-        <!-- Skills Practice Navigator (Matched to Navigator.tiff style) -->
+        <!-- Skills Practice Navigator with Category Dropdowns & Collapsible Sub-Sections -->
         <div class="skills-navigator-card">
           <div class="skills-navigator-top">
             <h2 class="skills-navigator-title">Skills Practice</h2>
             <div class="skills-tabs" role="tablist">
-              <button type="button" class="skills-tab active" data-section-filter="all" role="tab" aria-selected="true">
+              <!-- All Questions Tab -->
+              <button
+                type="button"
+                class="skills-tab active"
+                data-skill-group="all"
+                data-section-filter="all"
+                role="tab"
+                aria-selected="true"
+              >
                 全部題型
               </button>
-              <button type="button" class="skills-tab" data-section-filter="interactive-reading" role="tab" aria-selected="false">
-                Interactive Reading
-              </button>
-              <button type="button" class="skills-tab" data-section-filter="fill-in-the-blank" role="tab" aria-selected="false">
-                Fill in the Blank
-              </button>
-              <button type="button" class="skills-tab" data-section-filter="read-and-select" role="tab" aria-selected="false">
-                Read and Select
-              </button>
-              <button type="button" class="skills-tab" data-section-filter="listen-and-type" role="tab" aria-selected="false">
-                Listen and Type
-              </button>
+
+              <!-- Reading Dropdown Group -->
+              <div class="skills-dropdown-container" data-dropdown-group="reading">
+                <button
+                  type="button"
+                  class="skills-tab skills-dropdown-trigger"
+                  data-skill-group="reading"
+                  data-section-filter="reading-all"
+                  role="tab"
+                  aria-selected="false"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="skills-tab-label">Reading</span>
+                  <span class="skills-tab-badge" id="reading-active-badge" style="display: none;"></span>
+                  <svg class="skills-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+
+                <div class="skills-dropdown-menu" id="dropdown-menu-reading" role="menu">
+                  <div class="skills-dropdown-header">Reading Sub-Sections</div>
+                  <button type="button" class="skills-dropdown-item active" data-skill-group="reading" data-section-filter="reading-all" role="menuitem">
+                    <span class="dropdown-item-title">All Reading Question Sets</span>
+                    <span class="dropdown-item-count" id="count-reading-all">8</span>
+                  </button>
+                  <button type="button" class="skills-dropdown-item" data-skill-group="reading" data-section-filter="interactive-reading" role="menuitem">
+                    <span class="dropdown-item-title">Interactive Reading</span>
+                    <span class="dropdown-item-count" id="count-interactive-reading">3</span>
+                  </button>
+                  <button type="button" class="skills-dropdown-item" data-skill-group="reading" data-section-filter="fill-in-the-blank" role="menuitem">
+                    <span class="dropdown-item-title">Fill in the Blank</span>
+                    <span class="dropdown-item-count" id="count-fill-in-the-blank">3</span>
+                  </button>
+                  <button type="button" class="skills-dropdown-item" data-skill-group="reading" data-section-filter="read-and-select" role="menuitem">
+                    <span class="dropdown-item-title">Read and Select</span>
+                    <span class="dropdown-item-count" id="count-read-and-select">2</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Listening Dropdown Group -->
+              <div class="skills-dropdown-container" data-dropdown-group="listening">
+                <button
+                  type="button"
+                  class="skills-tab skills-dropdown-trigger"
+                  data-skill-group="listening"
+                  data-section-filter="listening-all"
+                  role="tab"
+                  aria-selected="false"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="skills-tab-label">Listening</span>
+                  <span class="skills-tab-badge" id="listening-active-badge" style="display: none;"></span>
+                  <svg class="skills-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+
+                <div class="skills-dropdown-menu" id="dropdown-menu-listening" role="menu">
+                  <div class="skills-dropdown-header">Listening Sub-Sections</div>
+                  <button type="button" class="skills-dropdown-item data-item" data-skill-group="listening" data-section-filter="listening-all" role="menuitem">
+                    <span class="dropdown-item-title">All Listening Question Sets</span>
+                    <span class="dropdown-item-count" id="count-listening-all">2</span>
+                  </button>
+                  <button type="button" class="skills-dropdown-item data-item" data-skill-group="listening" data-section-filter="listen-and-type" role="menuitem">
+                    <span class="dropdown-item-title">Listen and Type</span>
+                    <span class="dropdown-item-count" id="count-listen-and-type">2</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible Sub-Navigation Bar -->
+          <div class="skills-subnav-row" id="skills-subnav-row">
+            <div class="skills-subnav-pills" id="skills-subnav-pills">
+              <!-- Dynamically populated subnav pills -->
             </div>
           </div>
         </div>
