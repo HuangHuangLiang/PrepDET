@@ -2260,8 +2260,6 @@ function renderSubNavPills() {
 
 function renderPacksGrid() {
   const packsContainer = document.getElementById('packs-grid');
-  const headingEl = document.getElementById('packs-heading');
-  const subheadingEl = document.getElementById('packs-subheading');
   if (!packsContainer) return;
 
   const filteredPacks = state.packsMeta.filter((meta) => {
@@ -2285,24 +2283,6 @@ function renderPacksGrid() {
     if (state.selectedSectionFilter === 'listening-all') return SECTION_META[meta.section]?.skill === 'listening';
     return meta.section === state.selectedSectionFilter;
   });
-
-  if (headingEl) {
-    const titles = {
-      all: 'All DET Practice Sets',
-      'reading-all': 'All Reading Practice Question Sets',
-      'interactive-reading': 'Interactive Reading Sets',
-      'fill-in-the-blank': 'Fill in the Blank (C-Test) Sets',
-      'read-and-select': 'Read and Select Sets',
-      'listening-all': 'All Listening Practice Question Sets',
-      'listen-and-type': 'Listen and Type Practice Sets',
-    };
-    headingEl.textContent = titles[state.selectedSectionFilter] || 'Practice Question Sets';
-  }
-
-  if (subheadingEl) {
-    const count = filteredPacks.length;
-    subheadingEl.textContent = `${count} practice ${count === 1 ? 'pack' : 'packs'} available. Select any set below to start.`;
-  }
 
   if (filteredPacks.length === 0) {
     packsContainer.innerHTML = `
