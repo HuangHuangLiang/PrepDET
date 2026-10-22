@@ -291,6 +291,7 @@ textarea {
 }
 
 .pack-card {
+  position: relative;
   background: #ffffff;
   border: 2px solid var(--det-border);
   border-bottom: 4px solid var(--det-border-strong);
@@ -656,22 +657,42 @@ textarea {
   box-shadow: 0 1px 2px rgba(126, 34, 206, 0.06);
 }
 
-.btn-remove-imported {
-  background: transparent;
-  border: 1.5px solid #fecaca;
-  color: #dc2626;
-  font-family: var(--font-display);
-  font-size: 11.5px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.12s ease;
+.pack-card-imported .pack-card-top {
+  padding-right: 36px;
 }
 
-.btn-remove-imported:hover {
+/* Floating Top-Right Delete Button for Imported Cards */
+.btn-card-delete {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid #fecaca;
+  background: #ffffff;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-card-delete:hover {
   background: #fee2e2;
   border-color: #f87171;
+  color: #dc2626;
+  transform: scale(1.12);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+}
+
+.pack-start-link {
+  color: var(--duo-blue);
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .skills-placeholder {

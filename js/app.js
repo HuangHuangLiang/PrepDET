@@ -2212,7 +2212,7 @@ function renderSubNavPills() {
     pills = [
       {
         id: 'all',
-        label: '全部題型 (All Types)',
+        label: 'All Types',
         group: 'all',
         count: state.packsMeta.length,
       },
@@ -2305,6 +2305,19 @@ function renderPacksGrid() {
 
       return `
         <article class="pack-card ${isActive ? 'active' : ''} ${isImported ? 'pack-card-imported' : ''}" data-pack-id="${escapeHtml(meta.id)}">
+          ${isImported ? `
+            <button
+              type="button"
+              class="btn-card-delete"
+              data-delete-pack-id="${escapeHtml(meta.id)}"
+              title="Delete imported pack"
+              aria-label="Delete imported pack"
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 4.5H13.5M5.5 4.5V3C5.5 2.44772 5.94772 2 6.5 2H9.5C10.0523 2 10.5 2.44772 10.5 3V4.5M6 7.5V12M10 7.5V12M3.5 4.5L4.3 13.1C4.35 13.6 4.8 14 5.3 14H10.7C11.2 14 11.65 13.6 11.7 13.1L12.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          ` : ''}
           <div>
             <div class="pack-card-top">
               <span class="pack-badge-section pack-badge-${escapeHtml(meta.section)}">
@@ -2326,14 +2339,7 @@ function renderPacksGrid() {
           </div>
           <div class="pack-meta">
             <span>${meta.questionCount || 6} Questions • ${mins}:${secs}</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              ${isImported ? `
-                <button type="button" class="btn-remove-imported" data-delete-pack-id="${escapeHtml(meta.id)}" title="Delete imported practice set">
-                  Delete
-                </button>
-              ` : ''}
-              <span style="color: var(--duo-blue); font-weight: 800;">Start Practice →</span>
-            </div>
+            <span class="pack-start-link">Start Practice →</span>
           </div>
         </article>
       `;
@@ -2342,14 +2348,14 @@ function renderPacksGrid() {
 
   packsContainer.querySelectorAll('.pack-card').forEach((card) => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.btn-remove-imported')) return;
+      if (e.target.closest('.btn-card-delete')) return;
       const packId = card.getAttribute('data-pack-id');
       state.activePackId = packId;
       startPracticeSession(packId);
     });
   });
 
-  packsContainer.querySelectorAll('.btn-remove-imported').forEach((btn) => {
+  packsContainer.querySelectorAll('.btn-card-delete').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const packId = btn.getAttribute('data-delete-pack-id');
